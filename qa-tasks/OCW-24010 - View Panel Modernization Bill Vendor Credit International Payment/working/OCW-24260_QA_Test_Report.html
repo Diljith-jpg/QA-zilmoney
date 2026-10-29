@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OCW-24260 QA Test Report</title>
+<meta name="qa-header" content="ZIL MONEY  |  QA TEST REPORT">
+<meta name="qa-footer" content="OCW-24260 | Payables — V4 Detail Panels | Internal">
+</head>
+<body>
+
+<p class="eyebrow">QA Test Report</p>
+<h1 class="title">OCW-24260 — View Panel Modernization:<br>Bill, International Payment, Vendor Credit, Webhook Log &amp; API Log</h1>
+<p class="meta">Module: Payables / Developer Panel — V4 Detail Panels · Environment: Staging (feature build) · 30 Sep 2026</p>
+
+<table class="card"><tr><td><b>Purpose:</b> Confirm that the Bill, International Payment, Vendor Credit, Webhook Log and API Log detail (view) panels follow the V4 detail-panel design and the supplied reference UI, stay consistent with the Payment Out panel, and keep their existing actions working.</td></tr></table>
+
+<h2>Task Details</h2>
+<table class="grid">
+  <colgroup><col style="width:25%"><col></colgroup>
+  <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td class="k">Task ID</td><td>OCW-24260 (QA) — development task OCW-24010</td></tr>
+    <tr><td class="k">Module</td><td>Payables — Bills, Vendor Credit, International Payment; Settings › Developer Panel — API Logs, Webhook Logs</td></tr>
+    <tr><td class="k">Features</td><td>V4 detail side panel: header, actions, detail cards, tile tabs (audit logs / comments / attachments / receipts), expand / collapse, dark mode</td></tr>
+    <tr><td class="k">Environment</td><td>Staging feature build ocw-24010-midhun.web.ocw.sebipay.com, Chrome (1920 px viewport), Version 2.0 UI</td></tr>
+    <tr><td class="k">Reference</td><td>ViewPanels-Latest.html (Bills and International Payment designs); Payment Out V4 panel for the other three pages</td></tr>
+    <tr><td class="k">Status</td><td><span class="st pass">QA Pass</span></td></tr>
+  </tbody>
+</table>
+
+<h2>Task Overview</h2>
+<p>The task restyles five view pages as V4 detail side panels. Each panel was opened from its data table on the staging feature build and checked against the reference UI, or against the Payment Out panel where the reference has no design. The checks covered layout, actions per record status, tiles, expand/collapse, dark mode and typography, and the non-destructive actions (Pay, Edit, Clone, Send proof, comments, links) were run end-to-end. All five panels render in the new design and the tested actions work. A few small differences from the reference were found in the Bill and Vendor Credit action menus; QA reviewed them and accepted them. The task passes QA.</p>
+
+<h2>Issue / Requirement Description</h2>
+<ul>
+  <li>The Bill, International Payment, Vendor Credit, Webhook Log and API Log view pages used the old layout.</li>
+  <li>Requirement: Redesign them per the linked UX task using <code>/v4-detail-panel</code> as the reference, matching Payment Out / Payment In, reusing V4 components, and keeping spacing, typography, actions, responsive behaviour and panel interactions consistent.</li>
+  <li>Constraint: Existing business logic, API integrations and functionality must be preserved unless the UX task changes them.</li>
+</ul>
+
+<h2>Updates / Changes Implemented</h2>
+<ul>
+  <li>Bill: right-side drawer with amount + status badge, Invoice ID / Payee, status-based actions (Pay / Print / Unvoid + ⋮), Bill Details card with Bill Total highlight, Vendor Information (Bill From / Bill To), Line Items (credit applied) when present, and Audit Logs / Comments / Attachments tiles.</li>
+  <li>International Payment: "Payment Details" drawer with Clone and Send proof, Transaction details, Transaction ID strip, Statement table, Beneficiary (Details / Bank Details tabs), and Comments / Attachments / Signed Receipt / Proof of Delivery tiles.</li>
+  <li>Vendor Credit: drawer with Credit details, Vendor details (Open payee), Applied to bills and Audit logs / Comments / Attachments tiles; Edit + ⋮ according to status.</li>
+  <li>API Log: request line + response-status badge, Request details, Request / Response code blocks with Copy. Webhook Log: event type + status badge, Event details, Payload code block with Copy.</li>
+  <li>All panels: expand / collapse toggle, close, collapsible cards, and V4 colour tokens in light and dark mode.</li>
+</ul>
+
+<h2>Testing &amp; Verification</h2>
+<h3>Bill</h3>
+<ul>
+  <li>Verified that the panel matches the reference layout: header with amount (Funnel Display 17 px / 700) and Due / Paid / Voided badge, Bill Details rows, Bill Total highlight, and Vendor Information with avatars. Pay Status appears only in the expanded view, as in the reference.</li>
+  <li>Confirmed the actions per status: Due shows Pay + ⋮ (Print, Edit, Void, Delete, Mark As Paid); Paid shows Print + ⋮ (Delete); Voided shows Unvoid + ⋮ (Print, Delete). Clone Bill stays available from the row ⋮ menu.</li>
+  <li>Confirmed that Pay opens Send Payment pre-filled with the bill (amount, payee, memo "Payment for Bill 1120") and that Edit opens the Edit Bill modal pre-filled. Neither was submitted.</li>
+  <li>Verified the tiles: audit log with "Show 13 more"; comments (posted a test comment; an empty comment shows "Enter a comment before posting."); and the attachments list with Upload attachment.</li>
+  <li>Verified expand / collapse, collapsing a card, close and reopen, the sticky header while the body scrolls, and dark mode.</li>
+</ul>
+<h3>International Payment</h3>
+<ul>
+  <li>Verified that every section and tile of the reference is present and in order. Transaction details, the Statement history and both Beneficiary tabs show record data. Signed Receipt and Proof of Delivery empty states use the reference copy.</li>
+  <li>Confirmed that Clone opens Send Payment pre-filled (amount, wallet, payee, International Payment, INR). Send proof opens the existing Send Payment Proof options (Print Receipt, Copy Link, Email, Download, SMS, WhatsApp). Nothing was sent.</li>
+  <li>Confirmed the expanded two-column layout and the Failed-payment state (red badge, Purpose row, full statement history).</li>
+</ul>
+<h3>Vendor Credit</h3>
+<ul>
+  <li>Verified the panel for New, Partially Paid and Reconciled credits. New shows Edit + ⋮ (Void, Delete); no actions appear when the row menu has all actions disabled (Partially Paid); Reconciled shows ⋮ with Delete only. Mark As Reconciled stays available from the row ⋮ menu.</li>
+  <li>Confirmed that Edit opens the Edit Vendor Credit modal pre-filled, that Open payee opens the payee record, and that the Applied-to-bills reference opens the linked bill panel.</li>
+</ul>
+<h3>API Log &amp; Webhook Log</h3>
+<ul>
+  <li>Reached both through Settings › More › Developer Panel. Verified the request line + 200 (green) / 422 (red) badges, Request details, Request / Response toggle, and Copy ("Copied!").</li>
+  <li>Verified the Webhook Log panel: event type + Failed badge, Event details, payload JSON with Copy, and expand / collapse.</li>
+</ul>
+<h3>Consistency</h3>
+<ul>
+  <li>Confirmed that all five panels use the same shell as the Payment Out V4 panel: icon, title/amount with badge and sub-line, expand ⤢ / close, action row, collapsible cards and tile tabs.</li>
+  <li>Responsive behaviour at smaller widths (1024 / 768 / 390 px) was verified manually by the QA engineer and looks correct.</li>
+</ul>
+
+<h2>Test Cases Executed</h2>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:38%"><col style="width:40%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>Test Scenario</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC01</td><td>Bill — open detail panel from the eye icon</td><td>Drawer per reference: header, Bill Details with Bill Total, Vendor Information, three tiles</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC02</td><td>Bill (Due) — Pay + ⋮ menu</td><td>Pay primary; ⋮ Print, Edit, Void, Delete, Mark As Paid (reviewed and accepted by QA)</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC03</td><td>Bill — Pay action</td><td>Send Payment opens pre-filled for the bill</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC04</td><td>Bill — ⋮ › Edit</td><td>Edit Bill modal pre-filled</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC05</td><td>Bill (Paid) — actions and content</td><td>Print + ⋮ Delete; credit shown under Line Items; audit "Show more" works</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC06</td><td>Bill (Voided) — actions</td><td>Unvoid + ⋮ Print, Delete (reviewed and accepted by QA)</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC07</td><td>Bill — Audit Logs, Comments (add, empty validation), Attachments tiles</td><td>Lists load; comment posts; empty comment shows inline error; upload button shown</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC08</td><td>Bill — expand / collapse, card collapse, close / reopen</td><td>Layout switches correctly; Pay Status only in expanded view</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC09</td><td>Bill — dark mode and typography</td><td>Dark tokens applied; Funnel Display amount, Plus Jakarta Sans body</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC10</td><td>International Payment — open panel</td><td>Payment Details header, Clone / Send proof, Transaction details, Transaction ID, Statement</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC11</td><td>International Payment — Beneficiary Details / Bank Details tabs</td><td>Tabs switch and show beneficiary and bank data</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC12</td><td>International Payment — Comments, Attachments, Signed Receipt, Proof of Delivery</td><td>Tiles switch; empty states match reference copy</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC13</td><td>International Payment — Clone and Send proof</td><td>Clone opens pre-filled payment; Send proof opens proof options</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC14</td><td>International Payment — expanded view and Failed payment</td><td>Two-column layout; Failed badge and status history</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC15</td><td>Vendor Credit — panel for Partially Paid and Reconciled credits</td><td>Credit details, Vendor details, Applied to bills, tiles; actions follow status</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC16</td><td>Vendor Credit (New) — panel actions</td><td>Edit + ⋮ Void, Delete (reviewed and accepted by QA)</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC17</td><td>Vendor Credit — Edit, Open payee, Applied-to-bills link</td><td>Edit modal pre-filled; payee opens; linked bill panel opens</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC18</td><td>API Log — panel, Request / Response, 200 and 422, Copy, expand</td><td>Details and code blocks shown; status badge colour by result; Copy confirms</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC19</td><td>Webhook Log — panel, payload, Copy, expand</td><td>Event details and payload JSON shown</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC20</td><td>Consistency with Payment Out V4 panel</td><td>Same shell, header, actions and card pattern</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC21</td><td>Responsive behaviour (1024 / 768 / 390 px)</td><td>Panel adapts to smaller widths (verified manually by the QA engineer)</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC22</td><td>Destructive / dialog actions: Print, Void, Unvoid, Delete, Mark As Paid, upload, delete comment, Get Signed Receipt</td><td>Existing behaviour unchanged. Not run: they change records or open native dialogs</td><td class="st pend">Not tested</td></tr>
+  </tbody>
+</table>
+
+<h2>Notes</h2>
+<ul>
+  <li>Differences from the reference that QA reviewed and accepted: the Bill panel ⋮ menu has no Clone Bill, the Voided bill Unvoid button uses brand blue, and the Vendor Credit panel ⋮ menu has no Mark As Reconciled. Clone Bill and Mark As Reconciled remain available from the row menus.</li>
+  <li>No reference design was supplied for Vendor Credit, Webhook Log or API Log; these were checked against the Payment Out pattern.</li>
+  <li>Test data: one comment "QA test OCW-24010" was added to bill Invoice 1120.</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>The Bill, International Payment, Vendor Credit, Webhook Log and API Log view pages open as V4 detail side panels on the staging feature build, consistent with the Payment Out panel and the reference design. Their sections, tiles, expand / collapse, dark mode, responsive behaviour and tested actions (Pay, Edit, Clone, Send proof, comments, links, Copy) work as expected. Destructive actions (Void, Delete, Print, etc.) were not run in this session.</p>
+<p class="status">Status: <span class="pass">QA Pass</span></p>
+</body>
+</html>

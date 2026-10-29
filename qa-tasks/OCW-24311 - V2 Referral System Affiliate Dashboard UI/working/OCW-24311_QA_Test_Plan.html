@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OCW-24311 QA Test Plan</title>
+<meta name="qa-header" content="QA Scheduled · OCW-24311">
+<meta name="qa-footer" content="Internal — Confidential  ·  Zil Money — OCW-24311 QA Test Plan">
+</head>
+<body>
+
+<p class="eyebrow">QA Test Plan · QA Scheduled</p>
+<h1 class="title">Affiliate Dashboard —<br>V2 Referral System UI Implementation</h1>
+<p class="meta">QA task OCW-24311 · Dev task OCW-24304 · Zil Money V2 (new version) · 29 Sep 2026</p>
+
+<table class="card"><tr><td><b>Purpose:</b> define what will be tested, how, with which data and by when, so that the new Affiliate Dashboard can be verified against the approved state frames (desktop, dark and ≤785px) — layout, typography, every flow and modal — while the existing referral, coupon and payout behaviour stays intact.</td></tr></table>
+
+<h2>1. Task summary</h2>
+<table class="grid">
+  <colgroup><col style="width:24%"><col></colgroup>
+  <tbody>
+    <tr><td class="k">QA Task</td><td>OCW-24311 — QA Scheduled — V2 Referral System UI Implementation (Dashboard)</td></tr>
+    <tr><td class="k">Development Task</td><td>OCW-24304 — V2 Referral System UI Implementation (Dashboard); parent OCW-22811 Net Revenue-Based Referral System</td></tr>
+    <tr><td class="k">Modules</td><td>Affiliate Dashboard (More → Affiliate) — referral link, coupons, click details, earnings, withdrawal history, payout, earnings chart, referral commission</td></tr>
+    <tr><td class="k">Interface</td><td>Zil Money V2 (new version) — desktop, dark theme and ≤785px layout</td></tr>
+    <tr><td class="k">Design Reference</td><td>Affiliate Dashboard - States (2).html (OCW-22810, 29 Sep 2026) — frames A1–A10, B1–B4, C1–C4, D1–D2</td></tr>
+    <tr><td class="k">Status</td><td><span class="st pend">Pending</span></td></tr>
+  </tbody>
+</table>
+
+<h2>2. Objective</h2>
+<p>OCW-24304 implements the referral (affiliate) dashboard in the new version from the approved UX design in OCW-22810. The ticket carries a one-line description and no acceptance criteria, so the design state frames are the specification. QA will confirm that each state — empty, populated, payout request and confirmation, withdrawal history, share, commission structure, credit adjustment, coupon enabled and terms — matches the design in layout, content, typography and colour; that every control works; that the page reflows correctly at ≤785px and in dark theme; and that referral, coupon and payout data shown on the page agree with the backend. Anything that differs between the ticket, the design file and the build, or that the design leaves undefined is raised with the PM rather than resolved silently.</p>
+
+<h2>3. Test scope</h2>
+<h3>3.1 In scope</h3>
+<table class="grid">
+  <colgroup><col style="width:22%"><col style="width:34%"><col style="width:26%"><col style="width:18%"></colgroup>
+  <thead><tr><th>Area</th><th>Existing component (staging baseline)</th><th>New V2 behaviour</th><th>Design frame</th></tr></thead>
+  <tbody>
+    <tr><td class="k">Page shell and stat cards</td><td>affiliate-pap-dashboard, affiliate-pap-insight (modules/more/)</td><td>Total earnings, Approved + Withdraw, Pending, Total referrals</td><td>A1, A2</td></tr>
+    <tr><td class="k">Referral link</td><td>affiliate-pap-my-link, share-referral-link, affilate-terms-and-condition</td><td>Link field, ✎, Copy link, Share modal, Terms modal</td><td>A2, A6, A10</td></tr>
+    <tr><td class="k">Coupons</td><td>affiliate-pap-set-coupon</td><td>Code + credit amount, Enable coupon, status toggle, credit adjustment modal</td><td>A2, A8, A9</td></tr>
+    <tr><td class="k">Activity tabs</td><td>affiliate-pap-dashboard-table, referal-activity</td><td>Click details, Earnings, Withdrawal history + period chips</td><td>A2, A5, C4</td></tr>
+    <tr><td class="k">Payout</td><td>request-to-payout-modal (route withdraw)</td><td>Request to payout modal, submitted status modal</td><td>A3, A4, A5</td></tr>
+    <tr><td class="k">Chart and commission</td><td>affiliate-pap-insight</td><td>Total earnings chart Monthly / Quarterly, Referral commission card + Commission structure modal</td><td>A2, A7</td></tr>
+  </tbody>
+</table>
+<p>Checks applied to every state:</p>
+<ul>
+  <li>Layout, order and content against the matching design frame at 1536 × 840.</li>
+  <li>Typography — font family, size, weight and colour against the design (Funnel Display for titles and values, Funnel Sans for text).</li>
+  <li>Every button, link, tab, chip, toggle, sort and pagination control performs its action.</li>
+  <li>Modals — open, close with ×, Cancel, Escape and backdrop; page state unchanged after cancel.</li>
+  <li>Values shown match the backend (earnings, balances, referrals, coupons, withdrawals).</li>
+  <li>Dark theme and the ≤785px reflow.</li>
+</ul>
+<h3>3.2 Out of scope</h3>
+<ul>
+  <li>Commission calculation and net-revenue logic (OCW-23163, OCW-24210) — values are checked for display only.</li>
+  <li>Superadmin settings, dashboard and payout release (OCW-22918, currently On-Hold) — payout approval and actual payment are not tested.</li>
+  <li>Sign-up with a referral link or coupon by a new user — only the affiliate's dashboard is in scope; a referral attribution check is listed under regression if test data allows.</li>
+  <li>Classic version affiliate pages — regression check only.</li>
+</ul>
+
+<h2>4. Acceptance criteria</h2>
+<p>Derived from the OCW-24304 description ("Implement Referral System UI in ZilMoney V2 based on approved designs") and the state frames of the approved design. To be confirmed with the PM.</p>
+<table class="grid">
+  <colgroup><col style="width:9%"><col></colgroup>
+  <thead><tr><th class="c">ID</th><th>Acceptance criterion</th></tr></thead>
+  <tbody>
+    <tr><td class="id">AC01</td><td>The Affiliate Dashboard in the new version matches the approved design frames in layout, content, typography and colour.</td></tr>
+    <tr><td class="id">AC02</td><td>A first-time affiliate sees the empty state: $0.00 cards with helper text, Withdraw disabled, empty coupon, click and chart states (A1).</td></tr>
+    <tr><td class="id">AC03</td><td>Stat cards show Total earnings, Approved (with Withdraw), Pending and Total referrals with their sub-lines, using backend values (A2).</td></tr>
+    <tr><td class="id">AC04</td><td>The referral link can be copied and shared (Copy link, Email, SMS, WhatsApp), and Terms and conditions open from the card (A6, A10).</td></tr>
+    <tr><td class="id">AC05</td><td>An affiliate can create a coupon with a code and a first-month credit, see it at the top of the list with a success banner, toggle its status and view the credit adjustment table (A8, A9).</td></tr>
+    <tr><td class="id">AC06</td><td>Click details, Earnings and Withdrawal history tabs show their tables with period filters, sorting and pagination.</td></tr>
+    <tr><td class="id">AC07</td><td>From Approved → Withdraw, an affiliate can request a payout; a confirmation shows status, reference, date and expected payout, and the request appears as Pending review in Withdrawal history (A3–A5).</td></tr>
+    <tr><td class="id">AC08</td><td>The Total earnings chart switches Monthly / Quarterly, and the Referral commission card opens the Commission structure modal (A7).</td></tr>
+    <tr><td class="id">AC09</td><td>Dark theme applies the dark tokens to the same layout; badges stay readable and the chart is recoloured (B1–B4).</td></tr>
+    <tr><td class="id">AC10</td><td>At ≤785px the page reflows: sidebar → hamburger drawer, stat row → KPI stack, tables → stacked cards, tabs → chip row, modals compact and centred (C1–C4, D1–D2).</td></tr>
+    <tr><td class="id">AC11</td><td>Existing referral, coupon and payout behaviour and data are unchanged by the new UI.</td></tr>
+  </tbody>
+</table>
+
+<h2>5. Test approach</h2>
+<ul>
+  <li><b>Design comparison:</b> open each design frame (served locally) next to the build at 1536 × 840 and compare order, spacing, content and states.</li>
+  <li><b>Typography:</b> read computed styles in DevTools for page title, stat labels/values, card titles, buttons, table headers and modal text, against the design values.</li>
+  <li><b>Functional:</b> exercise every control once on an account with data and once on an account with no affiliate activity.</li>
+  <li><b>Data check:</b> compare stat cards, tables and chart with the API response for the same account; compare with the existing (classic) affiliate page for the same account.</li>
+  <li><b>Payout:</b> use a test account with an approved balance above $100 on staging; record the reference created. Approval and payment are not exercised.</li>
+  <li><b>Responsive:</b> DevTools device toolbar at 1920, 1536, 1280, 1024, 785, 768 and 390px, plus a live resize across 785px.</li>
+  <li><b>Browsers:</b> Chrome (primary), Edge, Firefox and Safari.</li>
+  <li><b>Test data:</b> two companies — one with referrals, coupons, clicks and withdrawals; one never used as an affiliate — plus a second company for cross-company checks.</li>
+</ul>
+
+<h2>6. Test cases</h2>
+<p>Status is Not tested until execution. Frame references are to the design file.</p>
+
+<h3>6.1 Navigation and page layout</h3>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:37%"><col style="width:41%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>Test Scenario</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC01</td><td>Open the Affiliate Dashboard from the sidebar (More) in the new version</td><td>Page loads with title "Affiliate Dashboard", back arrow, stat row, left column (link, coupon, tabs) and right column (chart, commission)</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC02</td><td>Compare the populated page with frame A2 at 1536 × 840</td><td>Same order, spacing, card structure and content as the design</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC03</td><td>Click the back arrow next to the title</td><td>Returns to the previous page; behaviour to confirm with PM</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC04</td><td>Load the page on a slow network (DevTools Slow 3G)</td><td>Loading state shown for cards, tables and chart; no layout jump when data arrives</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC05</td><td>Reload the page and deep-link to the dashboard URL</td><td>Page loads the same data; the sidebar highlights the correct menu item</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC06</td><td>Switch to classic version from the top bar and back</td><td>Classic affiliate page still opens; returning shows the new dashboard</td><td class="st pend">Not tested</td></tr>
+  </tbody>
+</table>
+
+<h3>6.2 Stat cards and empty state</h3>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:37%"><col style="width:41%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>Test Scenario</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC07</td><td>Open the dashboard as a company with no affiliate activity (A1)</td><td>All four cards $0.00 / 0 with "Lifetime, all referrals", "Nothing to withdraw yet", "No commissions in review", "Invite your first customer"</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC08</td><td>Check Withdraw on the empty state</td><td>Withdraw is disabled and cannot open the payout modal</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC09</td><td>Check empty coupon, click and chart states (A1)</td><td>"No coupons yet — Codes you create will show up here."; "No clicks yet — Visits to your referral link will show up here."; chart "2026 · no earnings recorded"</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC10</td><td>Open the dashboard as a company with activity (A2)</td><td>Total earnings, Approved, Pending and Total referrals match the API; sub-lines "Available to withdraw", "n commissions in review", "+n in the last 30 days"</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC11</td><td>Check card maths</td><td>Total earnings = Approved + Pending (e.g. $3,240.00 + $942.35 = $4,182.35), or the rule the PM confirms</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC12</td><td>Very large balances (e.g. $1,234,567.89)</td><td>Formatted with separators and two decimals; fits the card without clipping</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC13</td><td>Approved balance above $0 but not above $100</td><td>Withdraw state and message match the rule the PM confirms</td><td class="st pend">Not tested</td></tr>
+  </tbody>
+</table>
+
+<h3>6.3 Referral link, share and terms</h3>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:37%"><col style="width:41%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>Test Scenario</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC14</td><td>Check the referral link field</td><td>Shows the company's own link (https://zilmoney.com/ref/&lt;id&gt;), read-only, matching the existing page</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC15</td><td>Click Copy link</td><td>Link copied to clipboard; copied feedback shown; pasted value equals the displayed link</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC16</td><td>Click Share (A6)</td><td>"Share referral link" modal with Copy link, Email, SMS, WhatsApp</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC17</td><td>Choose Email, SMS and WhatsApp in turn</td><td>Each opens its channel with the referral link prefilled (behaviour to confirm with PM)</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC18</td><td>Click the edit (✎) icon on the link</td><td>Behaviour to confirm with PM; no unintended change to the link</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC19</td><td>Click Terms and conditions (A10)</td><td>Modal shows the yearly-subscription credit rule text exactly as the design</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC20</td><td>Close each modal with ×, Escape and backdrop click</td><td>Modal closes; page state unchanged</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC21</td><td>Open the referral link in a private window</td><td>Lands on the sign-up page with the referral applied; a click row is recorded (regression, if test data allows)</td><td class="st pend">Not tested</td></tr>
+  </tbody>
+</table>
+
+<h3>6.4 Coupons</h3>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:37%"><col style="width:41%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>Test Scenario</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC22</td><td>Check the coupon form on load</td><td>Coupon code (placeholder "e.g. zil-spring26"), Credits — 1st month commission (placeholder "Enter credit amount", ⓘ tooltip); Enable coupon disabled until both are valid</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC23</td><td>Create a coupon with a valid code and credit (e.g. zil-qa26, $150)</td><td>Success banner "Coupon &lt;code&gt; is enabled. New users can apply it at sign-up for a $150.00 credit."; new row on top with Applied users 0 and status on (A9); form clears</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC24</td><td>Dismiss the success banner (×)</td><td>Banner closes; table unchanged</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC25</td><td>Code shorter than 4 or longer than 10 characters</td><td>Rejected with an inline message, same limits as the existing page (4–10), or the limits the PM confirms</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC26</td><td>Duplicate code (an existing code, different case)</td><td>Rejected with a clear message; no second row</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC27</td><td>Code with spaces or special characters</td><td>Rejected or sanitised per the agreed rule; nothing unsafe stored</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC28</td><td>Credit amount 0, negative, non-numeric, decimals, above the highest tier ($450)</td><td>Invalid values rejected with inline message; allowed range to confirm with PM</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC29</td><td>Double-click Enable coupon</td><td>Only one coupon created</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC30</td><td>Toggle a coupon's status off and on</td><td>Toggle state saved and persists after reload; effect on sign-up per PM</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC31</td><td>Coupon with no applied users</td><td>Applied users shows "—" or 0 consistently (design shows both — to confirm with PM)</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC32</td><td>Click Credit adjustment info (A8)</td><td>Modal with explanatory text and tier table $100 → 50%, $150 → 48.5% … $450 → 39.5%, matching the backend tiers</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC33</td><td>Hover / focus the ⓘ next to Credits</td><td>Tooltip explains the first-month commission credit</td><td class="st pend">Not tested</td></tr>
+  </tbody>
+</table>
+
+<h3>6.5 Click details, Earnings and Withdrawal history</h3>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:37%"><col style="width:41%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>Test Scenario</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC34</td><td>Open Click details (default tab)</td><td>Columns Date, Click ID, Link refer ID, IP address, Source; "Showing 1–5 of N clicks"; newest first</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC35</td><td>Open Earnings</td><td>Columns Date, Referral, Commission (type · %), Amount, Status (Approved / Pending)</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC36</td><td>Open Withdrawal history (A5)</td><td>Columns Requested, Method (e.g. ACH · Chase ••4021), Amount, Reference, Status (Pending review / Paid)</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC37</td><td>Select All time, Last 30 days, Last 90 days, This year on each tab</td><td>Rows and "Showing x of N" count change to the selected period</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC38</td><td>Sort by each ↕ column</td><td>Ascending then descending; dates and amounts sort numerically</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC39</td><td>Paginate with ‹ ›</td><td>Next / previous page; count text correct; ‹ disabled on first page, › on last</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC40</td><td>Switch tabs after filtering or paging</td><td>Each tab keeps or resets its filter as agreed; no stale rows from another tab</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC41</td><td>Tab with no data for the period</td><td>Empty state text and "Nothing to show"; pagination disabled</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC42</td><td>Compare tab data with the existing affiliate report for the same account</td><td>Same records and amounts</td><td class="st pend">Not tested</td></tr>
+  </tbody>
+</table>
+
+<h3>6.6 Request to payout</h3>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:37%"><col style="width:41%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>Test Scenario</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC43</td><td>Click Withdraw on the Approved card (A3)</td><td>"Request to payout" modal: Approved balance equal to the card, Approved amount input, note "only withdrawal requests for amounts greater than $100 will be processed.", Cancel, Request payout</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC44</td><td>Click Cancel</td><td>Modal closes; no request created</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC45</td><td>Request a valid amount (e.g. $150)</td><td>"Payout request submitted" modal (A4): amount, Status Pending review, Reference WD-…, Requested on today, Expected payout "Within 3–5 business days"</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC46</td><td>Click View withdrawal history</td><td>Modal closes; Withdrawal history tab shows the new request first as Pending review with the same reference (A5)</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC47</td><td>Click Done on the submitted modal</td><td>Modal closes; Approved and Pending values refresh per the agreed rule</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC48</td><td>Amount $100.00 exactly, $99.99 and $100.01</td><td>Boundary follows the "greater than $100" rule — confirm with PM whether $100.00 is allowed</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC49</td><td>Amount above the approved balance</td><td>Rejected with a clear message; no request created</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC50</td><td>Empty, zero, negative, letters, three decimals</td><td>Rejected with inline validation; Request payout disabled or shows error</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC51</td><td>Double-click Request payout</td><td>Only one withdrawal request created</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC52</td><td>API error while requesting (e.g. server rejects)</td><td>Existing error message shown; modal stays open; no false success</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC53</td><td>Payout method shown in history</td><td>Bank account masked to last 4 digits (••4021); Check draft labelled as such</td><td class="st pend">Not tested</td></tr>
+  </tbody>
+</table>
+
+<h3>6.7 Earnings chart and referral commission</h3>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:37%"><col style="width:41%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>Test Scenario</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC54</td><td>Check the Total earnings chart (Monthly)</td><td>"2026 · monthly commission payouts"; Jan–Dec bars match monthly payouts from the API; axis scale fits the data</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC55</td><td>Switch to Quarterly and back</td><td>Four quarters with summed values; toggle state highlighted</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC56</td><td>Hover a bar</td><td>Tooltip with period and amount</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC57</td><td>Check the Referral commission card</td><td>50% first-month fees, 5% first 12 monthly fees, 2% credit card fees "equals 5.9 bps", matching configured rates</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC58</td><td>Open Commission structure from the card (A7)</td><td>Modal lists Initial subscription payment 50%, Monthly subscription 5% for 12 months, Credit card processing 2% (5.9 bps)</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC59</td><td>Chart with no earnings (A1)</td><td>Empty axis 0–1 with "no earnings recorded"; no errors</td><td class="st pend">Not tested</td></tr>
+  </tbody>
+</table>
+
+<h3>6.8 Typography</h3>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:37%"><col style="width:41%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>Test Scenario</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC60</td><td>Page title</td><td>Funnel Display 19px / 600 / #111827</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC61</td><td>Stat card label, value and sub-line</td><td>Label Funnel Sans 12.5px / 500 / #6B7280; value Funnel Display 25px / 700 / #111827; sub-line 11.5px / 400 / #9CA3AF</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC62</td><td>Card titles (e.g. Your referral link)</td><td>Funnel Display 15px / 600 / #111827</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC63</td><td>Buttons — Copy link (primary), Withdraw / Enable coupon (outline)</td><td>Copy link 14px / 500 white on navy; outline buttons 13px / 500 / #20319D</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC64</td><td>Commission percentages</td><td>Funnel Display 20px / 700; 50% in #7924FF (per design)</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC65</td><td>Payout note and helper text</td><td>Funnel Sans 12px / 400 / #6B7280</td><td class="st pend">Not tested</td></tr>
+  </tbody>
+</table>
+
+<h3>6.9 Responsive and dark theme</h3>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:37%"><col style="width:41%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>Test Scenario</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC66</td><td>1920 and 1280px</td><td>Two-column layout holds; nothing stretched or clipped</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC67</td><td>785px and below — page (C1)</td><td>One-column reflow; stat row becomes KPI stack; top bar shows "Re-verify" and credits</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC68</td><td>Hamburger menu at ≤785px (C2)</td><td>Opens the off-canvas sidebar; closes on selection or backdrop</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC69</td><td>Tables at ≤785px (C1, C4)</td><td>Click details and Withdrawal history show stacked cards with labelled fields; coupon table readable</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC70</td><td>Tabs and period filters at ≤785px</td><td>Shown as a chip row; scrollable without page overflow</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC71</td><td>Modals at ≤785px (C3)</td><td>Compact and centred; inputs and buttons reachable; no horizontal scroll</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC72</td><td>390px mobile</td><td>All content readable; long link and codes wrap or truncate without overlap</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC73</td><td>Dark theme — populated and empty (B1, B2)</td><td>Dark tokens on the same layout; badges stay light-chip; chart recoloured; text readable</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC74</td><td>Dark theme — modals (B3, B4)</td><td>Dark modal shell; inputs, note and buttons readable</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC75</td><td>Dark theme at ≤785px (D1, D2)</td><td>Reflow and dark tokens together; nothing dropped</td><td class="st pend">Not tested</td></tr>
+  </tbody>
+</table>
+
+<h3>6.10 Security and compliance (payouts / PII)</h3>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:37%"><col style="width:41%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>Test Scenario</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC76</td><td>Company B opens the dashboard</td><td>Sees only its own link, coupons, clicks, earnings and withdrawals — never Company A's</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC77</td><td>Call the payout or coupon API with another company's id</td><td>Refused (403/404); no data returned or created</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC78</td><td>Sub-user / invited user without affiliate permission</td><td>Page, Withdraw and Enable coupon hidden or refused, same as the existing page</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC79</td><td>Coupon code containing &lt;script&gt; or HTML</td><td>Rejected or stored and shown as plain text; nothing executes</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC80</td><td>Amount sent directly to the payout API below $100 or above balance</td><td>Server rejects it — the limit is not only in the UI</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC81</td><td>Click details IP addresses</td><td>Display agreed with compliance (full vs masked — to confirm); no other visitor PII shown</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">TC82</td><td>Console, network and URL during all flows</td><td>No tokens or PII in console or query strings; no failed requests</td><td class="st pend">Not tested</td></tr>
+  </tbody>
+</table>
+
+<h2>7. Regression scope</h2>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:37%"><col style="width:41%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>What Will Be Checked</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">RT01</td><td>Classic affiliate page (manage/affiliate) — shares modules/more components</td><td>Still loads and works; values match the new dashboard</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">RT02</td><td>Affiliate join / welcome flow for a non-affiliate</td><td>Unchanged; after joining, the new empty state appears</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">RT03</td><td>Affiliate report and referral activity pages</td><td>Unchanged data and behaviour</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">RT04</td><td>Sign-up with a referral link and with a coupon code</td><td>Referral attributed; coupon credit applied (if test environment allows)</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">RT05</td><td>Existing coupons created on the old page</td><td>Appear in the new table with correct amount, users and status</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">RT06</td><td>Existing withdrawal requests</td><td>Appear in Withdrawal history with correct method, amount, reference and status</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">RT07</td><td>Sidebar, top bar, company switch</td><td>Navigation unaffected; dashboard reloads for the switched company</td><td class="st pend">Not tested</td></tr>
+    <tr><td class="id">RT08</td><td>Light / dark theme toggle on other pages</td><td>No style leakage from the new dashboard</td><td class="st pend">Not tested</td></tr>
+  </tbody>
+</table>
+
+<h2>8. Traceability matrix</h2>
+<table class="grid">
+  <colgroup><col style="width:38%"><col style="width:40%"><col style="width:22%"></colgroup>
+  <thead><tr><th>Acceptance criterion</th><th>Test cases</th><th>Regression</th></tr></thead>
+  <tbody>
+    <tr><td class="k">AC01 — matches design</td><td>TC01–TC06, TC60–TC65</td><td>RT07</td></tr>
+    <tr><td class="k">AC02 — empty state</td><td>TC07–TC09, TC41, TC59</td><td>RT02</td></tr>
+    <tr><td class="k">AC03 — stat cards</td><td>TC10–TC13</td><td>RT01</td></tr>
+    <tr><td class="k">AC04 — referral link, share, terms</td><td>TC14–TC21</td><td>RT04</td></tr>
+    <tr><td class="k">AC05 — coupons</td><td>TC22–TC33, TC79</td><td>RT04, RT05</td></tr>
+    <tr><td class="k">AC06 — activity tabs</td><td>TC34–TC42, TC81</td><td>RT03</td></tr>
+    <tr><td class="k">AC07 — payout</td><td>TC43–TC53, TC80</td><td>RT06</td></tr>
+    <tr><td class="k">AC08 — chart and commission</td><td>TC54–TC59</td><td>—</td></tr>
+    <tr><td class="k">AC09 — dark theme</td><td>TC73–TC75</td><td>RT08</td></tr>
+    <tr><td class="k">AC10 — ≤785px reflow</td><td>TC66–TC72, TC75</td><td>—</td></tr>
+    <tr><td class="k">AC11 — existing behaviour unchanged</td><td>TC42, TC76–TC82</td><td>RT01–RT08</td></tr>
+  </tbody>
+</table>
+
+<div style="break-inside: avoid; page-break-inside: avoid">
+<h2>9. Entry and exit criteria</h2>
+<h3>Entry criteria</h3>
+<ul>
+  <li>OCW-24304 is dev-complete and deployed to the QA environment, with unit test evidence attached.</li>
+  <li>Test data available: an affiliate company with referrals, coupons, clicks, an approved balance above $100 and past withdrawals; a company with no affiliate activity; a second company for cross-company checks.</li>
+</ul>
+<h3>Exit criteria</h3>
+<ul>
+  <li>All test cases and regression checks executed.</li>
+  <li>No open Critical or High defects; Medium/Low defects agreed with the PM for later fix.</li>
+  <li>Payout and coupon validation confirmed on the server, not only in the UI.</li>
+  <li>QA test report delivered with Status: QA Pass.</li>
+</ul>
+</div>
+</body>
+</html>

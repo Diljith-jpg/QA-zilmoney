@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OCW-24678 QA Test Report</title>
+<meta name="qa-header" content="ZIL MONEY  |  QA TEST REPORT">
+<meta name="qa-footer" content="OCW-24678 | Receivables — Invoice / Credit Memo | Internal">
+</head>
+<body>
+
+<p class="eyebrow">QA Test Report</p>
+<h1 class="title">OCW-24678 — Partially Paid Status Filter<br>in Credit Memo (V3 and V4)</h1>
+<p class="meta">Module: Receivables — Invoice / Credit Memo · Environment: Staging · 13 Oct 2026</p>
+
+<table class="card"><tr><td><b>Purpose:</b> Confirm that the Partially Paid status filter on the Credit Memo page returns all matching records in V3 and V4, and that the other status filters continue to work.</td></tr></table>
+
+<h2>Task Details</h2>
+<table class="grid">
+  <colgroup><col style="width:25%"><col></colgroup>
+  <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td class="k">Task ID</td><td>OCW-24678</td></tr>
+    <tr><td class="k">Module</td><td>Receivables — Invoice / Credit Memo</td></tr>
+    <tr><td class="k">Features</td><td>Credit Memo status filter (Partially Paid, New, Void, Completed, All), combined column filters, empty state</td></tr>
+    <tr><td class="k">Environment</td><td>Staging (ticket API build ocw-24678)</td></tr>
+    <tr><td class="k">Status</td><td><span class="st pass">QA Pass</span></td></tr>
+  </tbody>
+</table>
+
+<h2>Task Overview</h2>
+<p>The task fixes the Partially Paid status filter on the Credit Memo page, which returned no results even though Partially Paid credit memos existed. Testing was carried out on staging in both the classic (V3) and new (V4) versions, using seven existing credit memos covering every status (two Partially Paid). In both versions the Partially Paid filter now returns exactly the two Partially Paid records, the other status filters return the correct records, the filter combines correctly with column search, and the empty-state message appears only when nothing matches.</p>
+
+<h2>Issue / Requirement Description</h2>
+<ul>
+  <li>Selecting Partially Paid in the Status filter on the Credit Memo page showed no results, although matching records existed. The same issue was reported in V3.</li>
+  <li>Requirement: the Partially Paid filter must return all records with that status in V3 and V4; other status filters must keep working; the empty-state message must show only when no records match.</li>
+</ul>
+
+<h2>Updates / Changes Implemented</h2>
+<ul>
+  <li>The Credit Memo Status filter now retrieves Partially Paid records correctly in V3 and V4.</li>
+  <li>Filter requests are served by the credit memo list and count endpoints, both returning 200 with no console errors.</li>
+</ul>
+
+<h2>Testing &amp; Verification</h2>
+<h3>Credit Memo — V3 (classic)</h3>
+<ul>
+  <li>Verified that Status = All lists all 7 credit memos.</li>
+  <li>Verified that Status = Partially Paid lists only credit memos #2 and #522 (2 of 2 results).</li>
+  <li>Confirmed that New (3), Void (1) and Completed (1) return the correct records.</li>
+  <li>Confirmed that a status with no matching records shows "Sorry! No results found".</li>
+</ul>
+<h3>Credit Memo — V4 (new version)</h3>
+<ul>
+  <li>Verified that Status = Partially Paid lists only credit memos #2 and #522 (2 of 2 results).</li>
+  <li>Confirmed that New (3), Void (1) and Completed (1) return the correct records.</li>
+  <li>Verified that Partially Paid combined with a Payee search returns only the matching record (#522).</li>
+  <li>Confirmed that clearing the status filter restores the full list for the remaining search.</li>
+  <li>Confirmed that a status with no matching records shows "No results found".</li>
+</ul>
+
+<h2>Test Cases Executed</h2>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:38%"><col style="width:40%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>Test Scenario</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC01</td><td>V3 Credit Memo — Status All</td><td>All 7 credit memos listed</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC02</td><td>V3 Credit Memo — Status Partially Paid</td><td>Only Partially Paid records (#2, #522) listed</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC03</td><td>V3 — Status New / Void / Completed</td><td>Only matching records listed (3 / 1 / 1)</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC04</td><td>V4 Credit Memo — Status Partially Paid</td><td>Only Partially Paid records (#2, #522) listed</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC05</td><td>V4 — Status New / Void / Completed</td><td>Only matching records listed (3 / 1 / 1)</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC06</td><td>V4 — Partially Paid combined with Payee search</td><td>Only records matching both filters listed</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC07</td><td>V4 — Clear status filter</td><td>List returns to all records for the remaining search</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC08</td><td>V3 and V4 — Status with no matching records</td><td>Empty-state message shown only when nothing matches</td><td class="st pass">Passed</td></tr>
+  </tbody>
+</table>
+
+<h2>Observations</h2>
+<ul>
+  <li>The Status dropdown (V3 and V4) includes "Mark as Completed", which reads as an action rather than a record status and returned no records. To be confirmed with development against the requirement that dropdown options match record statuses.</li>
+  <li>V3 footer on an empty result reads "Showing 1 to 0 of 0 results" (V4: "Showing 0 results"). Cosmetic.</li>
+  <li>Filter option "Void" is shown as "Voided" on the records. Filtering works; label only.</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>The Partially Paid status filter on the Credit Memo page now returns the correct records in both V3 and V4 on staging, and the New, Void, Completed and All filters, combined column search and the empty state continue to work as expected. Credit Note and the Invoice list status filter were not covered in this run.</p>
+<p class="status">Status: <span class="pass">QA Pass</span></p>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OCW-24258 QA Test Report</title>
+<meta name="qa-header" content="ZIL MONEY  |  QA TEST REPORT">
+<meta name="qa-footer" content="OCW-24258 | Payee, Cash Expense &amp; Document Mail — View Details | Internal">
+</head>
+<body>
+
+<p class="eyebrow">QA Test Report</p>
+<h1 class="title">OCW-24258 — Payee, Cash Expense &amp; Mail Document<br>View Details UI Update</h1>
+<p class="meta">Module: Payee, Cash Expense &amp; Document Mail — View Details (New Version) · Environment: Dev build OCW-24008 · 29 Sep 2026</p>
+
+<table class="card"><tr><td><b>Purpose:</b> Confirm that the Payee, Cash Expense, Document Mail and Document Mail History view panels follow the V4 detail-panel design, stay consistent with the Payment Out view, and keep all existing actions and data unchanged.</td></tr></table>
+
+<h2>Task Details</h2>
+<table class="grid">
+  <colgroup><col style="width:25%"><col></colgroup>
+  <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td class="k">Task ID</td><td>OCW-24258 (In QA) · Dev task OCW-24008 · Plan OCW-24254</td></tr>
+    <tr><td class="k">Module</td><td>Payee, Business Tools — Cash Expense, Document Mail, Document Mail History</td></tr>
+    <tr><td class="k">Features</td><td>View panel redesign, More Actions, detail cards, tiles (comments, attachments, audit), empty states, expand / collapse, dark theme</td></tr>
+    <tr><td class="k">Environment</td><td>Dev build ocw-24008-davood.web.ocw.sebipay.com (staging API), Chrome, company ARJUN 2</td></tr>
+    <tr><td class="k">Status</td><td><span class="st fail">QA Blocked</span></td></tr>
+  </tbody>
+</table>
+
+<h2>Task Overview</h2>
+<p>OCW-24008 moves the Payee, Cash Expense, Document Mail and Document Mail History view pages to the V4 detail-panel pattern used by Payment Out and Payment In. The four pages were tested in Chrome on the OCW-24008 dev build: panel open and close, header and More Actions, every detail card and tile, comments and attachments (including validation and deletion), payee-type labels, empty states, expand / collapse, dark theme and typography against Payment Out. The panels match the V4 pattern, keep every existing action, and render identically to Payment Out. One low-severity defect was found. Responsive widths could not be tested because the browser window could not be resized, so the result is QA Blocked until that check is run.</p>
+
+<h2>Issue / Requirement Description</h2>
+<ul>
+  <li>The Payee, Cash Expense, Document Mail and Document Mail History view pages used the old UI.</li>
+  <li>Requirement: follow the latest UX design, use the existing /v4-detail-panel structure, and stay consistent with the Payment Out and Payment In view pages.</li>
+  <li>Constraint: no change to existing business logic, API behaviour or functionality.</li>
+</ul>
+
+<h2>Updates / Changes Implemented</h2>
+<ul>
+  <li>Payee: V4 panel with name, Added date and location in the header; Send / Receive; More Actions with Edit and Delete; information, summary, bank account and send / received cards; Contacts, To-dos, Comments, Attachments and Audit trail tiles.</li>
+  <li>Cash Expense: header with amount and Expense / Income badge; Clone, Get receipt and Send proof buttons; More Actions with Edit and Delete; details card with a highlighted Total cash row; Payee summary; Activity log, Comments, Attachments and Last 10 transactions tiles.</li>
+  <li>Document Mail: header with title, status badge and Added date; Mail and Download buttons; More Actions with Edit and Delete, disabled unless the status is New; Tracking details, Mail activity log and Comments tiles.</li>
+  <li>Document Mail History: V4 table page whose view opens the same Document Mail panel.</li>
+  <li>Comments and attachments now use the shared V4 list components with inline validation and in-app delete confirmation.</li>
+</ul>
+
+<h2>Testing &amp; Verification</h2>
+<h3>Payee</h3>
+<ul>
+  <li>Verified that the panel opens from the list eye icon and closes with the close button, the Escape key and a click on the overlay, the same as Payment Out.</li>
+  <li>Confirmed that More Actions shows Edit and Delete (Delete in red) and closes without action when clicking outside it.</li>
+  <li>Confirmed that Edit opens the prefilled Update Customer modal and saves ("Payee Updated."), and the grid and panel refresh; after the save the header loses its Added date until the panel is reopened (BUG01).</li>
+  <li>Confirmed that the section label follows the payee type (Customer information / Employee information) and that missing fields show "—" and zero totals show $0.00.</li>
+  <li>Confirmed empty states for bank accounts, payments, contacts, comments and attachments, and that bank account numbers are masked to the last four digits.</li>
+</ul>
+<h3>Comments and attachments</h3>
+<ul>
+  <li>Confirmed that an empty or whitespace-only comment is rejected with "Enter a comment before posting." and nothing is posted.</li>
+  <li>Confirmed that a valid comment is added with author and time, and that HTML typed into a comment is displayed as plain text, not rendered.</li>
+  <li>Confirmed that a 6 MB file is rejected with "Maximum file size is 5MB", a .txt file uploads, and delete asks for in-app confirmation before removing it.</li>
+</ul>
+<h3>Cash Expense</h3>
+<ul>
+  <li>Verified the header, action buttons, details card, highlighted Total cash row, Payee summary and four tiles for both an Expense and an Income record.</li>
+  <li>Confirmed that the Payee summary total ($304.00) matches the payee's transactions in the list, and that every action of the previous panel is still available.</li>
+  <li>Confirmed that the typography of the Cash Expense panel is identical to the Payment Out panel (font family, size, weight, colour, button height and radius).</li>
+</ul>
+<h3>Document Mail and Document Mail History</h3>
+<ul>
+  <li>Confirmed that Edit and Delete are disabled for a Pending document and enabled for a New document.</li>
+  <li>Confirmed that a comment added on a document is still shown after closing and reopening the same document, and that it can be deleted.</li>
+  <li>Verified that Document Mail History uses V4 table styling and opens the same Document Mail panel.</li>
+</ul>
+<h3>Layout, theme and network</h3>
+<ul>
+  <li>Confirmed at 1920 px that the compact panel is 640 px and the expanded panel is 60 % (1150 px) with two-column cards, and that cards collapse and expand independently.</li>
+  <li>Confirmed that the Document Mail and Cash Expense panels use the dark tokens in dark theme (cards #1C293C, text #F8FAFC, labels #94A3B8, no shadow).</li>
+  <li>Confirmed that opening a panel calls only existing v4 endpoints with encrypted IDs, all returning 200, with no console errors.</li>
+</ul>
+
+<h2>Test Cases Executed</h2>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:38%"><col style="width:40%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>Test Scenario</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC01</td><td>Open a payee view panel from the list</td><td>The V4 panel opens with the selected payee's header, cards and tiles.</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC02</td><td>Close the panel with ×, Escape and an overlay click</td><td>The panel closes each way, the same as Payment Out.</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC03</td><td>Open More Actions on the Payee view</td><td>Edit and Delete are shown; clicking outside closes the menu.</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC04</td><td>Edit the payee from More Actions and update</td><td>The update modal opens prefilled, saves, and the panel and grid refresh.</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC05</td><td>Check the payee header after the update</td><td>The header still shows the Added date and location.</td><td class="st fail">Failed</td></tr>
+    <tr><td class="id">TC06</td><td>Open an employee-type payee with no linked data</td><td>Employee information label, "—" for missing fields, $0.00 totals and matching empty states.</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC07</td><td>Check bank account numbers in the panel</td><td>Only the last four digits are shown.</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC08</td><td>Check the Contacts, To-dos and Audit trail tiles</td><td>Each tile shows its data with the Add action and audit columns.</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC09</td><td>Post an empty and a whitespace-only comment</td><td>A validation message is shown and nothing is posted.</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC10</td><td>Post a valid comment containing HTML</td><td>The comment is added with author and time; HTML is shown as text.</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC11</td><td>Upload a 6 MB file and a small .txt file, then delete</td><td>6 MB is rejected; .txt uploads; delete asks for confirmation.</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC12</td><td>Collapse and expand a card; expand and collapse the panel</td><td>Cards toggle independently; panel widens to 60 % with two columns and back.</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC13</td><td>Open a Cash Expense view from Business Tools</td><td>Header, buttons, details, Total cash, Payee summary and four tiles match the design pattern.</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC14</td><td>Open More Actions on the Cash Expense view</td><td>Edit and Delete are shown; all previous actions remain available.</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC15</td><td>Check the Payee summary and Last 10 transactions</td><td>Totals match the payee's transactions in the list.</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC16</td><td>Open an Income cash expense record</td><td>Income badge and icon; content switches without stale data.</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC17</td><td>Compare typography with the Payment Out panel</td><td>Same font family, size, weight and colour for the same element.</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC18</td><td>Open a Document Mail view</td><td>Title, status badge, Mail / Download, details and tiles are shown.</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC19</td><td>Open More Actions for Pending and New documents</td><td>Edit and Delete disabled for Pending, enabled for New.</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC20</td><td>Add a document comment, reopen the document, delete it</td><td>The comment persists after reopening and can be deleted.</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC21</td><td>Open Document Mail History and a view from it</td><td>V4 table page; view opens the Document Mail panel.</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC22</td><td>Switch to dark theme (Document Mail, Cash Expense)</td><td>Dark tokens applied; all text and badges readable.</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC23</td><td>Check network calls and console when opening a panel</td><td>Existing endpoints only, all 200, encrypted IDs, no console errors.</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC24</td><td>Open the Payment Out view (regression reference)</td><td>Unchanged; same close behaviour as the new panels.</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC25</td><td>Resize to 1536, 1280, 1024, 768 and 390 px</td><td>Panel widths per breakpoint, no overlap or horizontal scroll.</td><td class="st fail">Blocked</td></tr>
+    <tr><td class="id">TC26</td><td>Payee Delete; Cash Expense Clone, Get receipt, Send proof; Document Mail Mail / Download</td><td>Each action performs its existing function.</td><td class="st pend">Not tested</td></tr>
+  </tbody>
+</table>
+
+<h2>Defects Found</h2>
+<table class="grid">
+  <colgroup><col style="width:10%"><col style="width:52%"><col style="width:13%"><col style="width:11%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">Case</th><th>Defect</th><th class="c">Severity</th><th class="c">Bug</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC05</td><td>Payee view: after ⋮ → Edit → Update, the header drops the "Added: 04/01/2026" line and shows only the location. Closing and reopening the panel restores it.</td><td class="c">Low</td><td class="c">Not filed</td><td class="st fail">Open</td></tr>
+  </tbody>
+</table>
+
+<h2>Open Points &amp; Observations</h2>
+<ul>
+  <li><b>Blocked:</b> responsive widths were not tested — the Chrome window is maximised and could not be resized from the extension. Needs a run in DevTools device mode or an un-maximised window.</li>
+  <li><b>Design values:</b> the plan's font sizes (from the design file) are about 1 px smaller than the shared V4 implementation, but the new panels match Payment Out exactly. Confirm which one is the target.</li>
+  <li><b>Expanded state:</b> the plan expects the expanded panel to be remembered after reload; the shared detail panel resets to compact on every open by design.</li>
+  <li><b>Print:</b> the dev notes list Print in the Cash Expense More Actions; the build and the previous panel do not have it.</li>
+  <li>Attachments list shows the storage path (allattachments/payee/…) instead of the file name.</li>
+  <li>The payee Audit trail does not show a newly added comment until the panel is reopened.</li>
+  <li>After Escape closes the ⋮ menu, a further Escape does not close the panel until the panel is clicked.</li>
+  <li>Unchanged data, noted only: Document Mail created time differs between list and panel (time zone); Last 10 transactions dates use the created date; overdue and done to-dos share the same strikethrough style.</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>The Payee, Cash Expense, Document Mail and Document Mail History view pages are on the V4 detail-panel pattern, keep every existing action, handle comments, attachments and empty states correctly, and match the Payment Out view in typography and behaviour, in light and dark theme. One low-severity header defect is open. Responsive behaviour could not be verified in this run, so sign-off waits on that check; if it passes, the task can move to QA Pass with the low-severity defect deferred.</p>
+<p class="status">Status: <span class="fail">QA Blocked</span></p>
+</body>
+</html>

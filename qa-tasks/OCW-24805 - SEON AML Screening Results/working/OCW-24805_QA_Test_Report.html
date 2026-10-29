@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OCW-24805 QA Test Report</title>
+<meta name="qa-header" content="ZIL MONEY  |  QA TEST REPORT">
+<meta name="qa-footer" content="OCW-24805 | Admin — SEON AML Analysis | Internal">
+</head>
+<body>
+
+<p class="eyebrow">QA Test Report</p>
+<h1 class="title">OCW-24805 — AML Screening Results on<br>the SEON AML Analysis Screen</h1>
+<p class="meta">Module: Admin — SEON AML Analysis · Environment: Staging · 20 Oct 2026</p>
+
+<table class="card"><tr><td><b>Purpose:</b> Confirm that the SEON AML Analysis screen shows the AML screening result by default, clearly states Matches Found or No Matches, shows match details on the same screen, and clearly identifies pending or unavailable results.</td></tr></table>
+
+<h2>Task Details</h2>
+<table class="grid">
+  <colgroup><col style="width:25%"><col></colgroup>
+  <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td class="k">Task ID</td><td>OCW-24805</td></tr>
+    <tr><td class="k">Module</td><td>Admin — transaction verification, SEON AML Analysis screen</td></tr>
+    <tr><td class="k">Features</td><td>AML screening result by default, Matches Found / No Matches status, match details, pending / unavailable state</td></tr>
+    <tr><td class="k">Environment</td><td>Staging</td></tr>
+    <tr><td class="k">Status</td><td><span class="st pass">QA Pass</span></td></tr>
+  </tbody>
+</table>
+
+<h2>Task Overview</h2>
+<p>During transaction verification, reviewers open the SEON AML Analysis screen through "SEON Status". Before this change, the AML Screening section under Payer Information had to be expanded to see the result. The task shows the screening result on the screen by default. QA checked each acceptance criterion: the default view, the No Matches and Matches Found outcomes, the match details, and the pending or unavailable state. All criteria were met. A QA test video is linked on the ticket.</p>
+
+<h2>Issue / Requirement Description</h2>
+<ul>
+  <li>Reported: AML screening information was not visible right away. Reviewers had to expand the AML Screening section under Payer Information, which added clicks.</li>
+  <li>Requirement: show the AML screening status by default when the SEON AML Analysis screen opens.</li>
+  <li>Requirement: clearly show "Matches Found" or "No Matches", based on the screening response.</li>
+  <li>Requirement: when matches exist, show the relevant match information on the same screen without extra clicks.</li>
+  <li>Requirement: clearly identify pending or unavailable results, and never show them as "No Matches".</li>
+</ul>
+
+<h2>Updates / Changes Implemented</h2>
+<ul>
+  <li>The SEON AML Analysis screen shows the AML screening result as soon as it opens. The section no longer needs to be expanded.</li>
+  <li>The result is labelled "Matches Found" or "No Matches", based on the screening response.</li>
+  <li>When there are matches, their details appear on the same screen.</li>
+  <li>Pending or unavailable screenings are labelled separately from "No Matches".</li>
+</ul>
+
+<h2>Testing &amp; Verification</h2>
+<h3>Default visibility</h3>
+<ul>
+  <li>Verified that opening the SEON AML Analysis screen from "SEON Status" shows the AML screening result straight away, with nothing to expand.</li>
+</ul>
+<h3>Screening outcome</h3>
+<ul>
+  <li>Verified that a transaction with no screening matches shows "No Matches".</li>
+  <li>Verified that a transaction with screening matches shows "Matches Found".</li>
+  <li>Confirmed that the match information for a transaction with matches is shown on the same screen without extra clicks.</li>
+</ul>
+<h3>Pending / unavailable results</h3>
+<ul>
+  <li>Confirmed that a pending or unavailable screening is clearly identified as such and is not shown as "No Matches".</li>
+</ul>
+
+<h2>Test Cases Executed</h2>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:38%"><col style="width:40%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>Test Scenario</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC01</td><td>Open the SEON AML Analysis screen from "SEON Status"</td><td>AML screening result visible by default, nothing to expand</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC02</td><td>Transaction whose screening returned no matches</td><td>"No Matches" clearly shown</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC03</td><td>Transaction whose screening returned matches</td><td>"Matches Found" clearly shown</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC04</td><td>Match details for a transaction with matches</td><td>Relevant match information on the same screen, no extra clicks</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC05</td><td>Screening pending or unavailable</td><td>Clearly identified as pending / unavailable, not shown as "No Matches"</td><td class="st pass">Passed</td></tr>
+  </tbody>
+</table>
+
+<h2>Conclusion</h2>
+<p>The SEON AML Analysis screen now shows the AML screening result by default. It clearly states Matches Found or No Matches, and it shows match details on the same screen without extra clicks. Pending or unavailable screenings are labelled clearly and are not reported as No Matches. All acceptance criteria of OCW-24805 are met on staging.</p>
+<p class="status">Status: <span class="pass">QA Pass</span></p>
+</body>
+</html>

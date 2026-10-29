@@ -1,0 +1,86 @@
+/*
+ * Zil Money QA document style — shared by the QA Test Plan and QA Test Report.
+ * Matches the OCW-24254 plan / OCW-24258 report samples.
+ * Written to render in BOTH Chrome (PDF) and Word (DOCX): tables for boxes,
+ * no flex/grid, no rgba, hex colours only.
+ */
+@page {
+  size: Letter;
+  margin: 0.95in 1in 0.9in 1in;
+  @top-right {
+    font-family: Calibri, Carlito, Arial, sans-serif;
+    font-size: 8.5pt; font-weight: 700; letter-spacing: 1.6pt;
+    color: #2E7D5B; vertical-align: bottom; padding-bottom: 6pt;
+    border-bottom: 0.75pt solid #C9D2DC;
+  }
+  @bottom-center {
+    font-family: Calibri, Carlito, Arial, sans-serif;
+    font-size: 8pt; color: #5A6472; vertical-align: top; padding-top: 6pt;
+    border-top: 0.75pt solid #C9D2DC;
+  }
+}
+
+body {
+  font-family: Calibri, Carlito, Arial, sans-serif;
+  font-size: 11pt; line-height: 1.35; color: #222222;
+  margin: 0; background: #FFFFFF;
+}
+
+/* ---------- masthead ---------- */
+p.eyebrow {
+  font-size: 10pt; font-weight: 700; letter-spacing: 1.2pt; color: #2E7D5B;
+  margin: 0 0 2pt 0; text-transform: uppercase;
+}
+h1.title {
+  font-size: 20pt; font-weight: 700; color: #1F3A5F; line-height: 1.15;
+  margin: 0; padding-bottom: 6pt; border-bottom: 2.25pt solid #1F3A5F;
+}
+p.meta { font-size: 9pt; font-style: italic; color: #5A6472; margin: 6pt 0 12pt 0; }
+
+/* ---------- cards (single-cell tables so Word keeps the bar) ---------- */
+table.card { width: 100%; border-collapse: collapse; margin: 0 0 12pt 0; }
+table.card td {
+  padding: 7pt 10pt; font-size: 10.5pt;
+  border: 0.75pt solid #2E7D5B; border-left: 4pt solid #2E7D5B;
+  background: #E9F3EC;
+}
+table.card.amber td { border-color: #B9770E; background: #FBF3E2; }
+table.card.red td { border-color: #C0392B; background: #FBEAE8; }
+table.card b { color: #1F3A5F; }
+
+/* ---------- headings ---------- */
+h2 {
+  font-size: 14pt; font-weight: 700; color: #1F3A5F;
+  margin: 14pt 0 8pt 0; padding-bottom: 3pt; border-bottom: 1pt solid #2E7D5B;
+  page-break-after: avoid; break-after: avoid;
+}
+h3 {
+  font-size: 11.5pt; font-weight: 700; color: #1F3A5F;
+  margin: 10pt 0 4pt 0; page-break-after: avoid; break-after: avoid;
+}
+p { margin: 0 0 8pt 0; }
+ul { margin: 0 0 8pt 0; padding-left: 20pt; }
+li { margin: 0 0 3pt 0; }
+
+/* ---------- data tables ---------- */
+table.grid { width: 100%; border-collapse: collapse; margin: 4pt 0 10pt 0; font-size: 9pt; }
+table.grid th {
+  background: #1F3A5F; color: #FFFFFF; font-weight: 700; text-align: left;
+  padding: 4pt 6pt; border: 0.75pt solid #1F3A5F;
+}
+table.grid td { padding: 4pt 6pt; border: 0.75pt solid #C9D2DC; vertical-align: middle; }
+table.grid tr:nth-child(even) td { background: #EEF2F6; }
+table.grid tr.alt td { background: #EEF2F6; }            /* Word ignores nth-child — rows also carry class="alt" */
+table.grid td.id { font-weight: 700; text-align: center; white-space: nowrap; }
+table.grid th.c, table.grid td.c { text-align: center; }
+table.grid td.k { font-weight: 700; }                     /* label column of a two-column spec table */
+thead { display: table-header-group; }
+tr { page-break-inside: avoid; break-inside: avoid; }
+
+/* ---------- status colours (keep the exact words) ---------- */
+.st { font-weight: 700; text-align: center; }
+.pass { color: #1E6B4A; }   /* Passed, QA Pass */
+.pend { color: #B9770E; }   /* Not tested, Pending, In progress */
+.fail { color: #C0392B; }   /* Failed, QA Fail, Blocked */
+
+p.status { font-weight: 700; color: #1F3A5F; margin-top: 4pt; }

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OCW-25067 QA Test Report</title>
+<meta name="qa-header" content="ZIL MONEY  |  QA TEST REPORT">
+<meta name="qa-footer" content="OCW-25067 | Business Verification — Level 2 | Internal">
+</head>
+<body>
+
+<p class="eyebrow">QA Test Report</p>
+<h1 class="title">OCW-25067 — Remove Outdated Sample Formation<br>Document from Level 2 Business Verification</h1>
+<p class="meta">Module: Business Verification — Level 2 · Environment: Staging · 26 Oct 2026</p>
+
+<table class="card"><tr><td><b>Purpose:</b> Confirm that the outdated generic sample formation document and its reference PDF are gone from Level 2 Business Verification, while the state-specific examples and the document upload flow still work.</td></tr></table>
+
+<h2>Task Details</h2>
+<table class="grid">
+  <colgroup><col style="width:25%"><col></colgroup>
+  <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td class="k">Task ID</td><td>OCW-25067 (sub-task of OCW-25066)</td></tr>
+    <tr><td class="k">Module</td><td>Business Verification — Level 2 (formation document step)</td></tr>
+    <tr><td class="k">Features</td><td>Removal of the generic sample formation document and its PDF, state-wise "View examples", document upload and submission</td></tr>
+    <tr><td class="k">Environment</td><td>Staging — https://staging.web.ocw.sebipay.com</td></tr>
+    <tr><td class="k">Test evidence</td><td>Tester's Loom recording, linked in the Jira comments</td></tr>
+    <tr><td class="k">Status</td><td><span class="st pass">QA Pass</span></td></tr>
+  </tbody>
+</table>
+
+<h2>Task Overview</h2>
+<p>The Level 2 business verification step showed a generic "Sample formation document" section next to the state-specific formation document examples. This could confuse users and lead to wrong uploads. The build removes the generic section and its PDF and keeps the state-wise examples. QA tested the Level 2 business verification step on staging: the generic sample no longer appears, "View examples" still shows the state-specific examples, and document upload and submission work as before.</p>
+
+<h2>Issue / Requirement Description</h2>
+<ul>
+  <li>Reported: Level 2 business verification showed both a generic sample formation document ("Sample formation document – Reference PDF to guide your upload") and state-specific examples.</li>
+  <li>Requirement: remove the outdated "Sample formation document" section and its downloadable reference PDF.</li>
+  <li>Requirement: keep the state-specific formation document examples and the "View examples" option.</li>
+  <li>Constraint: document upload and submission must not change, and the removal must apply wherever the outdated sample appeared in the Level 2 workflow.</li>
+</ul>
+
+<h2>Updates / Changes Implemented</h2>
+<ul>
+  <li>The "Sample formation document – Reference PDF to guide your upload" section is no longer shown in Level 2 business verification.</li>
+  <li>The download option for the generic reference PDF is gone.</li>
+  <li>The state-specific formation document examples are still available through "View examples".</li>
+</ul>
+
+<h2>Testing &amp; Verification</h2>
+<h3>Outdated sample removed</h3>
+<ul>
+  <li>Verified that the "Sample formation document" section is no longer shown in the Level 2 business verification step.</li>
+  <li>Verified that the generic reference PDF can no longer be downloaded from the step.</li>
+  <li>Confirmed that the outdated sample does not appear anywhere else in the Level 2 workflow.</li>
+</ul>
+<h3>State-specific examples retained</h3>
+<ul>
+  <li>Verified that "View examples" is still shown and opens the state-specific formation document examples.</li>
+</ul>
+<h3>Upload and submission regression</h3>
+<ul>
+  <li>Confirmed that the formation document can still be uploaded and that Level 2 verification can still be submitted as before.</li>
+  <li>Confirmed that the rest of the step's layout looks correct after the section was removed.</li>
+</ul>
+
+<h2>Test Cases Executed</h2>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:38%"><col style="width:40%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>Test Scenario</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC01</td><td>Open the formation document step of Level 2 business verification</td><td>"Sample formation document – Reference PDF to guide your upload" is not shown</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC02</td><td>Look for the generic reference PDF download</td><td>No download option for the outdated sample PDF</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC03</td><td>Click "View examples"</td><td>State-specific formation document examples are shown</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC04</td><td>Check the rest of the Level 2 workflow for the outdated sample</td><td>The outdated sample does not appear anywhere</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC05</td><td>Upload a formation document</td><td>The upload works as before</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC06</td><td>Submit Level 2 business verification</td><td>Submission works as before</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC07</td><td>Layout of the step after the removal</td><td>No empty gap or broken alignment where the section used to be</td><td class="st pass">Passed</td></tr>
+  </tbody>
+</table>
+
+<h2>Conclusion</h2>
+<p>The outdated generic sample formation document and its reference PDF have been removed from Level 2 Business Verification. The state-specific formation document examples are still available through "View examples", and document upload and submission work as before. Tested on staging; the tester's Loom recording is linked in the Jira comments.</p>
+<p class="status">Status: <span class="pass">QA Pass</span></p>
+</body>
+</html>

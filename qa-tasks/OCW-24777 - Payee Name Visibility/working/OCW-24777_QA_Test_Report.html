@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OCW-24777 QA Test Report</title>
+<meta name="qa-header" content="ZIL MONEY  |  QA TEST REPORT">
+<meta name="qa-footer" content="OCW-24777 | Payments Out — Payee Filter Dropdown | Internal">
+</head>
+<body>
+
+<p class="eyebrow">QA Test Report</p>
+<h1 class="title">OCW-24777 — Payee Name Visibility in<br>the Payments Out Payee Dropdown</h1>
+<p class="meta">Module: Payments Out — Payee Filter (Version 2.0) · Environment: Staging (OCW-24777 build) · 16 Oct 2026</p>
+
+<table class="card"><tr><td><b>Purpose:</b> Confirm that long payee names in the Payments Out "Select Payee" dropdown show their full name in a tooltip on hover, and that the dropdown is wider and taller than before.</td></tr></table>
+
+<h2>Task Details</h2>
+<table class="grid">
+  <colgroup><col style="width:25%"><col></colgroup>
+  <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td class="k">Task ID</td><td>OCW-24777</td></tr>
+    <tr><td class="k">Module</td><td>Payables — Payments Out (Version 2.0 / V4 UI)</td></tr>
+    <tr><td class="k">Features</td><td>Payee filter dropdown: hover tooltip for truncated names, dropdown width, dropdown list height</td></tr>
+    <tr><td class="k">Environment</td><td>Staging — https://ocw-24777-davood.web.ocw.sebipay.com (baseline: staging.web.ocw.sebipay.com)</td></tr>
+    <tr><td class="k">Status</td><td><span class="st pass">QA Pass</span></td></tr>
+  </tbody>
+</table>
+
+<h2>Task Overview</h2>
+<p>The task makes long payee names readable in the Payee filter dropdown on the Payments Out page. The dropdown was tested in Version 2.0 on the OCW-24777 build and compared side by side with the same page, company and payees on the current staging build. On the OCW-24777 build, a truncated payee name shows its full name in a tooltip on hover, short names show no tooltip, and the dropdown is wider and taller than on staging. Search, selecting, applying, clearing, scrolling, the Check and ACH tabs, and dark mode all worked.</p>
+
+<h2>Issue / Requirement Description</h2>
+<ul>
+  <li>In the Payments Out table, long payee names in the Payee dropdown were cut off with "…" and no tooltip appeared on hover, so the full name could not be read.</li>
+  <li>Requirement: show the full payee name in the Payee dropdown (Jira description; confirmed by the QA lead as a hover tooltip plus a wider and taller dropdown).</li>
+</ul>
+
+<h2>Updates / Changes Implemented</h2>
+<ul>
+  <li>Hovering a truncated payee name in the dropdown shows a tooltip with the full "Name (Nickname)" text. The tooltip appears only when the name is actually truncated.</li>
+  <li>Dropdown width increased from 240 px to 250 px; the visible text area per row went from 174 px to 184 px.</li>
+  <li>List height increased from 160 px to 190 px, so about one more payee is visible without scrolling.</li>
+</ul>
+
+<h2>Testing &amp; Verification</h2>
+<h3>Tooltip (Payments Out → All)</h3>
+<ul>
+  <li>Verified that hovering "0969 Ocean View Road (0969 Ocean View Road)" and "01219 Plumbing Inc2 (01219 Plumbing Inc2)" shows the full name in a tooltip.</li>
+  <li>Verified that a short name ("11 PAY WEB2 (11 PAY WEB2)") shows no tooltip.</li>
+  <li>Confirmed that on staging the same names are cut off and no tooltip appears.</li>
+</ul>
+<h3>Dropdown size (compared with staging)</h3>
+<ul>
+  <li>Verified that the dropdown is 250 px wide on the OCW-24777 build vs 240 px on staging.</li>
+  <li>Verified that the list area is 190 px tall on the OCW-24777 build vs 160 px on staging; row height is unchanged (34 px).</li>
+</ul>
+<h3>Dropdown behaviour</h3>
+<ul>
+  <li>Verified that searching "Plumbing" narrows the list to the matching payee, and that the tooltip works on the search result.</li>
+  <li>Verified that selecting the payee and clicking Apply filters the table to that payee, and that the clear (×) control brings back the full list.</li>
+  <li>Verified that the list scrolls inside the taller area, that more payees load on scroll (10 → 20), and that the tooltip works on a payee that loaded later ("ABC Medical Records Inc (…)").</li>
+  <li>Confirmed that the page does not scroll sideways while the dropdown is open.</li>
+</ul>
+<h3>Other tabs and theme</h3>
+<ul>
+  <li>Verified the same width (250 px), height (190 px) and tooltip on the Check and ACH tabs.</li>
+  <li>Verified that the dropdown and tooltip are readable in dark mode.</li>
+  <li>Confirmed that the app logged no console errors while these steps were run.</li>
+</ul>
+
+<h2>Test Cases Executed</h2>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:38%"><col style="width:40%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>Test Scenario</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC01</td><td>Version 2.0 → Payments Out → All → open Select Payee</td><td>Dropdown opens with search, Select All, list, Cancel / Apply</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC02</td><td>Hover a truncated long payee name</td><td>Tooltip shows the full name</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC03</td><td>Hover a short payee name</td><td>No tooltip</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC04</td><td>Compare dropdown size with the staging build</td><td>Wider and taller than staging</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC05</td><td>Search a payee and hover the result</td><td>List filtered; tooltip on result</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC06</td><td>Select payee → Apply, then clear</td><td>Table filtered by payee; clear restores the list</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC07</td><td>Scroll list; hover a later-loaded long name</td><td>Scrolls, loads more, tooltip works</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC08</td><td>Check and ACH tabs — same dropdown</td><td>Same size and tooltip</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC09</td><td>Dark mode</td><td>Dropdown and tooltip readable</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC10</td><td>Console during the run</td><td>No new application errors</td><td class="st pass">Passed</td></tr>
+  </tbody>
+</table>
+
+<h2>Observations</h2>
+<ul>
+  <li>Not covered in this run: smaller window widths (the browser window could not be resized; it stayed at 1920 px) and the Wire, Virtual Card, Recurring and QuickBooks tabs.</li>
+  <li>The change applies to Version 2.0 only. In the old version (Payments table, V1), the Payee dropdown is unchanged and matches staging: names cut off, no tooltip. This is outside this ticket's scope as clarified.</li>
+  <li>Pre-existing, unrelated to this ticket: the V1 Payments page logs <i>TypeError: Cannot read properties of undefined (reading 'x')</i> on load.</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>On the Version 2.0 Payments Out page, long payee names in the Payee dropdown now show their full name in a tooltip on hover, short names show no tooltip, and the dropdown is wider (250 px vs 240 px) and taller (190 px vs 160 px list) than on staging. Search, filter, clear, scrolling, the Check and ACH tabs, and dark mode all work. Smaller window widths and the remaining payment tabs were not tested.</p>
+<p class="status">Status: <span class="pass">QA Pass</span></p>
+</body>
+</html>

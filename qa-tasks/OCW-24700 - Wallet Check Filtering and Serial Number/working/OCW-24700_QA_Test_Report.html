@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OCW-24700 QA Test Report</title>
+<meta name="qa-header" content="ZIL MONEY  |  QA TEST REPORT">
+<meta name="qa-footer" content="OCW-24700 | Payments Out — Wallet Check Filtering &amp; Reference ID | Internal">
+</head>
+<body>
+
+<p class="eyebrow">QA Test Report</p>
+<h1 class="title">OCW-24700 — Wallet Check Filtering and<br>Reference ID on Mailed Wallet Checks</h1>
+<p class="meta">Module: Payments Out — Wallet Check Filtering &amp; Reference ID · Environment: Staging · 16 Oct 2026</p>
+
+<table class="card"><tr><td><b>Purpose:</b> Confirm that filtering Payments Out by Wallet and Mailed returns every mailed wallet check in the new and Classic UIs, that bank-account filtering still works, and that mailed wallet checks show a Reference ID.</td></tr></table>
+
+<h2>Task Details</h2>
+<table class="grid">
+  <colgroup><col style="width:25%"><col></colgroup>
+  <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td class="k">Task ID</td><td>OCW-24700</td></tr>
+    <tr><td class="k">Module</td><td>Payments Out (new V4 UI) / Payments (Classic UI)</td></tr>
+    <tr><td class="k">Features</td><td>Source = Wallet / Bank filter, Check status Mailed filter, Reference ID (grid and detail view), Check tab Mailed list</td></tr>
+    <tr><td class="k">Environment</td><td>Staging — web staging.web.ocw.sebipay.com, API build ocw-24700-danish; company "Diljith NEW"; Chrome</td></tr>
+    <tr><td class="k">Status</td><td><span class="st pass">QA Pass</span></td></tr>
+  </tbody>
+</table>
+
+<h2>Task Overview</h2>
+<p>Customers reported that filtering Payments Out by Wallet and then Mailed did not list all mailed wallet checks, and that wallet checks did not keep a consistent number. The fix makes the Mailed filter return mailed records and fills the Reference ID field for mailed checks. Both filters were tested on the new Payments Out page and the Classic Payments page, for wallet and bank sources. Totals were reconciled against all 125 wallet Mail payments, and the Reference IDs were checked in the grid and detail views. Filtering works correctly in both UIs, and wallet checks mailed after the fix show their Reference ID. Two wallet checks mailed before the fix have no Reference ID; QA confirmed this is expected, because the change applies only to checks mailed after it.</p>
+
+<h2>Issue / Requirement Description</h2>
+<ul>
+  <li>Filtering by Wallet then "Mailed" did not show all mailed checks issued from that wallet.</li>
+  <li>Wallet checks sometimes showed a different number from the one they were issued with.</li>
+  <li>Requirement: Wallet + Mailed lists every mailed wallet check; filtering works for both wallet and bank account checks; wallet checks consistently show their original number.</li>
+  <li>Dev note (from QA brief): when the status is Mailed, a reference ID is stored in the Reference ID field.</li>
+</ul>
+
+<h2>Updates / Changes Implemented</h2>
+<ul>
+  <li>Payments Out → All: Source = WALLET with Status = Check › Mailed now returns the mailed wallet checks (old and new UI).</li>
+  <li>Mailed wallet checks show a Reference ID in the grid and in the new-UI detail panel (header "Ref: …" and Payment details).</li>
+  <li>Before the fix, the Reference ID was not stored for mailed checks. The change applies to checks mailed after it, and existing records are not backfilled (confirmed by QA).</li>
+</ul>
+
+<h2>Testing &amp; Verification</h2>
+<h3>New UI — Payments Out → All</h3>
+<ul>
+  <li>Verified that Source = WALLET + Mailed returns 3 records, all from wallets and all Mailed: alan $35.00 (Master Wallet), alan $38.00 (diljith rr) and Alan bb $80.00 (diljith rr).</li>
+  <li>Confirmed the list is complete: Source = WALLET + Type = Mail with all statuses gives 125 records over 3 pages. Exactly 3 of them are Mailed, and they are the same 3 the filter returns.</li>
+  <li>Verified that Reference ID 13606 and 13529 appear in the grid, the panel header and Payment details. The emailed wallet check 13607 matches the Check No in the Master Wallet ledger.</li>
+  <li>Confirmed that Alan bb $80.00 (Mailed) and Alan bb $126.00 (mailed, now Completed), both on wallet diljith rr and mailed on 10/14/2026 before the fix, show no Reference ID. This is expected for records created before the change. Every wallet Mail check from 10/14 12:09 pm onward shows its ID.</li>
+  <li>Verified that Source = BANK + Mailed returns 28 bank-account records, all Mailed, each with a Reference ID (the check number).</li>
+</ul>
+<h3>Classic UI — Payments → All</h3>
+<ul>
+  <li>Verified that Source = WALLET + Mailed returns the same 3 records as the new UI, with the same Reference IDs, and blank for the $80.00 record.</li>
+  <li>Confirmed after a fresh load that Mailed alone returns 31 records and Mailed + BANK returns 28, all with a Reference ID. 28 bank + 3 wallet = 31.</li></ul>
+<h3>Check tab — Mailed (both UIs)</h3>
+<ul>
+  <li>Verified that the Mailed sub-tab lists 28 checks in both UIs, all Mailed and all from bank accounts. Wallet Mail payments do not appear in the Check tab, which has no wallet account filter.</li>
+  <li>Confirmed there were no console errors, and every list request returned 200.</li>
+</ul>
+
+<h2>Test Cases Executed</h2>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:38%"><col style="width:40%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>Test Scenario</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC01</td><td>New UI: Source = WALLET + Status = Mailed</td><td>Only mailed wallet checks listed</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC02</td><td>New UI: completeness — Wallet + Type Mail (all statuses, 125 rows) compared with the Mailed filter</td><td>Every Mailed wallet record appears in the Mailed filter</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC03</td><td>New UI: Reference ID on mailed wallet checks 13606 / 13529 (grid, panel header, Payment details)</td><td>Reference ID shown consistently</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC04</td><td>Pre-fix mailed wallet check Alan bb $80.00 (diljith rr, 10/14 11:54 am), both UIs</td><td>Still listed under Wallet + Mailed; Reference ID not backfilled (expected for records before the fix)</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC05</td><td>Pre-fix wallet Mail check Alan bb $126.00 (mailed 10/14 10:52 am, now Completed)</td><td>Not listed under Mailed (status Completed); Reference ID not backfilled (expected)</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC06</td><td>New UI: Source = BANK + Status = Mailed</td><td>Only bank mailed checks, each with a Reference ID</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC07</td><td>Classic UI: Source = WALLET + Status = Mailed</td><td>Same records and Reference IDs as the new UI</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC08</td><td>Classic UI: Mailed total and Mailed + BANK (fresh load)</td><td>Bank + wallet counts add up to the Mailed total; bank rows have a Reference ID</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC09</td><td>Check tab → Mailed (old and new UI)</td><td>Mailed checks listed</td><td class="st pass">Passed</td></tr>
+  </tbody>
+</table>
+
+<h2>Observations</h2>
+<ul>
+  <li>Classic UI: after a browser Back from Payment View, the filter boxes did not match the applied filters. Source showed "All" while the grid was still wallet-only. After choosing BANK, Status showed "Mailed" but the grid listed 2,604 rows of every status. This did not happen on a fresh load. It is not caused by this ticket.</li>
+  <li>Open point: wallet Mail checks appear only in the All tab (Source filter), not in the Check tab → Mailed list. Please confirm this is intended.</li>
+  <li>Open point: the ticket refers to the wallet check "serial number", while the change works through the Reference ID field. Please confirm the Reference ID is the number customers should see.</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>Filtering by Wallet + Mailed and Bank + Mailed works correctly in both the new Payments Out page and the Classic Payments page. Every mailed record is returned, and the counts reconcile (3 wallet + 28 bank = 31 Mailed). Wallet checks mailed after the fix show their Reference ID in the grid and in the new-UI detail panel. Checks mailed before the fix keep a blank Reference ID, which is expected. No defects were found for this ticket.</p>
+<p class="status">Status: <span class="pass">QA Pass</span></p>
+</body>
+</html>

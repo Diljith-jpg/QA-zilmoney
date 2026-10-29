@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OCW-24680 QA Test Report</title>
+<meta name="qa-header" content="ZIL MONEY  |  QA TEST REPORT">
+<meta name="qa-footer" content="OCW-24680 | Settings — General Settings | Internal">
+</head>
+<body>
+
+<p class="eyebrow">QA Test Report</p>
+<h1 class="title">OCW-24680 — Language Setting:<br>Label and Tooltip Clarification</h1>
+<p class="meta">Module: Settings — General Settings · Environment: Dev test link (staging backend) · 13 Oct 2026</p>
+
+<table class="card"><tr><td><b>Purpose:</b> Confirm that the General Settings "Language" field is renamed to "Check Amount-in-Words Language", keeps the English and French options, and shows a tooltip explaining that it only affects the check amount in words.</td></tr></table>
+
+<h2>Task Details</h2>
+<table class="grid">
+  <colgroup><col style="width:25%"><col></colgroup>
+  <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td class="k">Task ID</td><td>OCW-24680</td></tr>
+    <tr><td class="k">Module</td><td>Settings — Application Settings → General (V3 classic and V4 / Version 2.0)</td></tr>
+    <tr><td class="k">Features</td><td>Language field label, tooltip, English/French options</td></tr>
+    <tr><td class="k">Environment</td><td>https://ocw-24680-hari.web.ocw.sebipay.com (branch OCW-24680-HARI) on the staging API · Chrome, 1920 px</td></tr>
+    <tr><td class="k">Status</td><td><span class="st fail">QA Fail</span></td></tr>
+  </tbody>
+</table>
+
+<h2>Task Overview</h2>
+<p>Users assumed the "Language" setting changes the application language, when it only controls the language of the check amount in words. The task asks for the field to be renamed, the English and French options to be kept, and an explanatory tooltip to be added. Both V3 and V4 General Settings were tested. The tooltip is in place in both versions and the options are unchanged, but the field label still reads "Language" in both versions, so the rename has not been implemented.</p>
+
+<h2>Issue / Requirement Description</h2>
+<ul>
+  <li>Reported: the "Language" field (English / French) under Settings is confused with the application language. It only sets the language of the check amount in words.</li>
+  <li>Requirement: rename the field to "Check Amount-in-Words Language".</li>
+  <li>Requirement: keep the existing English and French options.</li>
+  <li>Requirement: add a tooltip. Suggested text: "Select the language used to write the check amount in words. This setting does not change the application language."</li>
+</ul>
+
+<h2>Updates / Changes Implemented</h2>
+<ul>
+  <li>An info icon is added next to the field label in V3 and V4. Hovering it shows a tooltip to the right.</li>
+  <li>The field label is unchanged: it still reads "Language".</li>
+</ul>
+
+<h2>Testing &amp; Verification</h2>
+<h3>V4 (Version 2.0) — Settings → App Settings → General</h3>
+<ul>
+  <li>Verified that hovering the info icon shows: "Select the language used to write the check amount in words. This setting does not change the application language". This matches the suggested text, except that the final full stop is missing.</li>
+  <li>Confirmed that the dropdown still lists English and French, and the saved value (English) is unchanged.</li>
+  <li>Observed that the field label reads "Language *", not "Check Amount-in-Words Language".</li>
+  <li>Confirmed that no console errors appeared.</li>
+</ul>
+<h3>V3 (classic) — Settings → Application Settings → General</h3>
+<ul>
+  <li>Verified that the same tooltip appears on hovering the info icon, with the same text.</li>
+  <li>Confirmed that the dropdown still lists English and French, and the value is unchanged.</li>
+  <li>Observed that the field label reads "Language *".</li>
+  <li>Confirmed that no console errors appeared.</li>
+</ul>
+<p>No settings were saved during testing: the dropdown was opened to check the options and closed without changing the value.</p>
+
+<h2>Test Cases Executed</h2>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:38%"><col style="width:40%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>Test Scenario</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC01</td><td>V4 tooltip on the info icon</td><td>Tooltip explains the setting only affects the check amount in words</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC02</td><td>V4 English and French options</td><td>Both options available; value unchanged</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC03</td><td>V4 field label</td><td>Label reads "Check Amount-in-Words Language"</td><td class="st fail">Failed</td></tr>
+    <tr><td class="id">TC04</td><td>V3 tooltip on the info icon</td><td>Tooltip explains the setting only affects the check amount in words</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC05</td><td>V3 English and French options</td><td>Both options available; value unchanged</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC06</td><td>V3 field label</td><td>Label reads "Check Amount-in-Words Language"</td><td class="st fail">Failed</td></tr>
+    <tr><td class="id">TC07</td><td>Console errors on General Settings (V3, V4)</td><td>No errors</td><td class="st pass">Passed</td></tr>
+  </tbody>
+</table>
+
+<h2>Defects Found</h2>
+<table class="grid">
+  <colgroup><col style="width:12%"><col style="width:48%"><col style="width:14%"><col style="width:12%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">Case</th><th>Defect</th><th class="c">Severity</th><th class="c">Bug</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC03, TC06</td><td>The General Settings field is still labelled "Language" in V3 and V4. The ticket requires it to be renamed to "Check Amount-in-Words Language".</td><td class="c">Medium</td><td class="c">—</td><td class="st fail">Open</td></tr>
+    <tr><td class="id">TC01, TC04</td><td>Minor: the tooltip text is missing the final full stop ("…does not change the application language").</td><td class="c">Low</td><td class="c">—</td><td class="st fail">Open</td></tr>
+  </tbody>
+</table>
+
+<h2>Conclusion</h2>
+<p>The tooltip has been added in both V3 and V4 General Settings and explains that the setting only controls the language of the check amount in words. The English and French options are unchanged, and no console errors appeared. However, the field is still labelled "Language" in both versions, so the required rename to "Check Amount-in-Words Language" is not implemented. The task should go back to development for the label change.</p>
+<p class="status">Status: <span class="fail">QA Fail</span></p>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OCW-24687 QA Test Report</title>
+<meta name="qa-header" content="ZIL MONEY  |  QA TEST REPORT">
+<meta name="qa-footer" content="OCW-24687 | Bank Accounts — Audit Trail | Internal">
+</head>
+<body>
+
+<p class="eyebrow">QA Test Report</p>
+<h1 class="title">OCW-24687 — Bank Account Audit Trail:<br>Date Display and Missing IP Address</h1>
+<p class="meta">Module: Bank Accounts — Audit Trail · Environment: Dev test link (staging backend) · 13 Oct 2026</p>
+
+<table class="card"><tr><td><b>Purpose:</b> Confirm that the Bank Account Audit Trail shows the correct IP address and device for each entry in both V3 and V4, with a compact date layout that keeps the other columns aligned.</td></tr></table>
+
+<h2>Task Details</h2>
+<table class="grid">
+  <colgroup><col style="width:25%"><col></colgroup>
+  <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td class="k">Task ID</td><td>OCW-24687</td></tr>
+    <tr><td class="k">Module</td><td>Bank Accounts — Audit Trail (V3 classic and V4 / Version 2.0)</td></tr>
+    <tr><td class="k">Features</td><td>IP Address column, Device column, date/time cell, column alignment</td></tr>
+    <tr><td class="k">Environment</td><td>https://ocw-24687-davood.web.ocw.sebipay.com (branch OCW-24687-DAVOOD) on the staging API · Chrome, 1920 px</td></tr>
+    <tr><td class="k">Status</td><td><span class="st pass">QA Pass</span></td></tr>
+  </tbody>
+</table>
+
+<h2>Task Overview</h2>
+<p>The task fixes the bank account Audit Trail, where the IP address was missing and the date wrapped awkwardly. The updated build was tested in both V3 and V4 on 10 bank accounts. For every entry, the By, IP Address, Device and Notes values in the table were compared with the activities API response. All entries matched in both versions, the IP address is present on every entry, and device names appear wherever the API provides one. The two-line date/time layout (date with the time below it) was confirmed as the intended design and accepted.</p>
+
+<h2>Issue / Requirement Description</h2>
+<ul>
+  <li>Reported: the Date value wrapped onto a second line due to insufficient column space, and the IP address was not displayed in the audit log.</li>
+  <li>Requirement: display the IP address for each applicable audit log entry.</li>
+  <li>Requirement: other audit log columns must keep their alignment and readability.</li>
+  <li>Date layout: the ticket asked for a single line. QA was told the stacked date/time layout is the intended design and should not be failed.</li>
+</ul>
+
+<h2>Updates / Changes Implemented</h2>
+<ul>
+  <li>The Audit Trail now has separate <b>IP Address</b> and <b>Device</b> columns (Date, Status, By, IP Address, Device, Notes) in V3 and V4.</li>
+  <li>The date cell shows the date with a smaller, grey time below it, and neither line wraps.</li>
+  <li>The By column is set to no-wrap.</li>
+</ul>
+
+<h2>Testing &amp; Verification</h2>
+<h3>Method</h3>
+<ul>
+  <li>The Audit Trail was opened through the app menu (V3: My Accounts → Bank Accounts → Audit Trail; V4: Accounts → Bank Accounts → Audit Trail).</li>
+  <li>For each account, the <code>GET /api/v4/bank-accounts/{id}/activities</code> response was captured in the page and compared row by row with the rendered table, matching columns by header.</li>
+  <li>Accounts tested in both versions: ****8445, 6572, 7444, 5060, 6789, 3355, 7890, 4444, 5548, 3455.</li>
+</ul>
+<h3>V3 (classic)</h3>
+<ul>
+  <li>Verified that the IP Address column matches the API on every entry across all 10 accounts, and that the API returned an IP for every entry.</li>
+  <li>Verified that the Device column matches the API on every entry. Device names such as "Diljith PC" and "dfdfdf" appear where the API provides them, and the cell is blank where the API sends no device.</li>
+  <li>Confirmed that By and Notes still match the API and the columns stay aligned, with no console errors.</li>
+</ul>
+<h3>V4 (Version 2.0)</h3>
+<ul>
+  <li>Verified on a fresh page load, one account at a time, that the IP Address and Device columns match the API on every entry across the same 10 accounts.</li>
+  <li>Confirmed that V3 and V4 show the same row counts, IPs and device names for each account, with no console errors.</li>
+</ul>
+<h3>Recent activity</h3>
+<ul>
+  <li>Confirmed that today's entries on ****8445 (13 Oct 2026, 01:17–01:18 pm) show both an IP address and a device name ("Diljith PC") in V3 and V4, so new activity records both values.</li>
+</ul>
+
+<h2>Test Cases Executed</h2>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:38%"><col style="width:40%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>Test Scenario</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC01</td><td>V3 Audit Trail opens from the menu</td><td>Entries load, IP Address and Device columns present, no console errors</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC02</td><td>V3 IP Address per entry (10 accounts)</td><td>Each row shows the IP returned by the API</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC03</td><td>V3 Device per entry (10 accounts)</td><td>Each row shows the device returned by the API; blank when none</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC04</td><td>V4 Audit Trail opens from the menu</td><td>Entries load, IP Address and Device columns present, no console errors</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC05</td><td>V4 IP Address per entry (10 accounts)</td><td>Each row shows the IP returned by the API</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC06</td><td>V4 Device per entry (10 accounts)</td><td>Each row shows the device returned by the API; blank when none</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC07</td><td>Other columns (Status, By, Notes) in V3 and V4</td><td>Values match the API; alignment and readability unaffected</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC08</td><td>V3 and V4 consistency</td><td>Same IPs and devices for the same account in both versions</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC09</td><td>Date/time layout (two-line, accepted design)</td><td>Date with smaller time below, no wrapping inside each line</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC10</td><td>Responsive widths 1280 / 1024 / 768</td><td>IP Address and Device visible at each width</td><td class="st pend">Not tested</td></tr>
+  </tbody>
+</table>
+
+<h2>Conclusion</h2>
+<p>The Bank Account Audit Trail now shows the IP address and the device correctly in both V3 and V4. On 10 accounts, every entry matched the activities API, and recent entries show both values. The Status, By and Notes columns are unaffected, and no console errors appeared. Older entries without a device name show a blank Device cell because the API returns no device for them. That is existing data, not a defect in this build. Responsive widths could not be checked in this run, because the browser tool cannot change the page viewport.</p>
+<p class="status">Status: <span class="pass">QA Pass</span></p>
+</body>
+</html>

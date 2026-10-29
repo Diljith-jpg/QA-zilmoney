@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OCW-24573 QA Test Report</title>
+<meta name="qa-header" content="ZIL MONEY  |  QA TEST REPORT">
+<meta name="qa-footer" content="OCW-24573 | Bank Accounts | Internal">
+</head>
+<body>
+
+<p class="eyebrow">QA Test Report</p>
+<h1 class="title">OCW-24573 — Incorrect Bank Account Type<br>for Plaid-Linked Bank Accounts</h1>
+<p class="meta">Module: Bank Accounts · Environment: Staging · 09 Oct 2026</p>
+
+<table class="card"><tr><td><b>Purpose:</b> Confirm that a bank account added through Plaid gets the correct bank account type automatically, instead of a numeric value, in both the new and the classic design.</td></tr></table>
+
+<h2>Task Details</h2>
+<table class="grid">
+  <colgroup><col style="width:25%"><col></colgroup>
+  <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td class="k">Task ID</td><td>OCW-24573 (parent OCW-24572)</td></tr>
+    <tr><td class="k">Module</td><td>Bank Accounts (backend)</td></tr>
+    <tr><td class="k">Features</td><td>Add bank account via Plaid, Bank Account Information, account type mapping</td></tr>
+    <tr><td class="k">Environment</td><td>Staging — new design and classic design</td></tr>
+    <tr><td class="k">Status</td><td><span class="st pass">QA Pass</span></td></tr>
+  </tbody>
+</table>
+
+<h2>Task Overview</h2>
+<p>This backend sub-task fixes the bank account type for bank accounts linked through Plaid. Previously, the account type came through as a number (for example 1) instead of an account type name. QA linked bank accounts through Plaid in both the new and the classic design. The bank account type now fills in automatically from the Plaid account selected: a Plaid checking account becomes Business Checking, and a Plaid savings account becomes Personal Savings. The fix works as expected.</p>
+
+<h2>Issue / Requirement Description</h2>
+<ul>
+  <li>When a bank account was added through Plaid, the bank account type was fetched as a numeric value (for example 1) instead of the correct account type.</li>
+  <li>Requirement: the account type of the Plaid account selected must map to the correct bank account type automatically.</li>
+</ul>
+
+<h2>Updates / Changes Implemented</h2>
+<ul>
+  <li>The backend maps the Plaid account type to the bank account type: Plaid checking → Business Checking, Plaid savings → Personal Savings.</li>
+  <li>The bank account type now appears as the correct name, not as a numeric value.</li>
+</ul>
+
+<h2>Testing &amp; Verification</h2>
+<h3>New design</h3>
+<ul>
+  <li>Verified that adding a bank account through Plaid with a checking account sets the account type to Business Checking.</li>
+  <li>Verified that adding a bank account through Plaid with a savings account sets the account type to Personal Savings.</li>
+</ul>
+<h3>Classic design</h3>
+<ul>
+  <li>Verified that a Plaid checking account sets the account type to Business Checking.</li>
+  <li>Verified that a Plaid savings account sets the account type to Personal Savings.</li>
+</ul>
+
+<h2>Test Cases Executed</h2>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:38%"><col style="width:40%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>Test Scenario</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC01</td><td>New design — add bank account via Plaid, select a checking account</td><td>Account type set to Business Checking automatically</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC02</td><td>New design — add bank account via Plaid, select a savings account</td><td>Account type set to Personal Savings automatically</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC03</td><td>Classic design — add bank account via Plaid, select a checking account</td><td>Account type set to Business Checking automatically</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC04</td><td>Classic design — add bank account via Plaid, select a savings account</td><td>Account type set to Personal Savings automatically</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC05</td><td>Account type value shown after a Plaid link</td><td>Account type name shown, not a numeric value</td><td class="st pass">Passed</td></tr>
+  </tbody>
+</table>
+
+<h2>Conclusion</h2>
+<p>A bank account linked through Plaid now gets the correct bank account type automatically: Plaid checking becomes Business Checking, and Plaid savings becomes Personal Savings. The numeric value no longer appears. Verified on staging in both the new and the classic design.</p>
+<p class="status">Status: <span class="pass">QA Pass</span></p>
+</body>
+</html>

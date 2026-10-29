@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OCW-24882 QA Test Report</title>
+<meta name="qa-header" content="ZIL MONEY  |  QA TEST REPORT">
+<meta name="qa-footer" content="OCW-24882 | Payments Out — V4 Payment Details | Internal">
+</head>
+<body>
+
+<p class="eyebrow">QA Test Report</p>
+<h1 class="title">OCW-24882 — Transaction Category on<br>the V4 Payment Details Screen</h1>
+<p class="meta">Module: Payments Out — V4 Payment Details · Environment: Staging (feature build OCW-24882-MIDHUN) · 20 Oct 2026</p>
+
+<table class="card"><tr><td><b>Purpose:</b> Confirm that the V4 Payment Details panel shows the transaction's assigned category, that the value matches the transaction, and that no Category row appears when there is no category.</td></tr></table>
+
+<h2>Task Details</h2>
+<table class="grid">
+  <colgroup><col style="width:25%"><col></colgroup>
+  <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td class="k">Task ID</td><td>OCW-24882 (sub-task of OCW-24881)</td></tr>
+    <tr><td class="k">Module</td><td>Payments Out (V4) — payment detail panel</td></tr>
+    <tr><td class="k">Features</td><td>Category row in Payment details, no-category handling, expanded view, V3 parity</td></tr>
+    <tr><td class="k">Environment</td><td>Staging — https://ocw-24882-midhun.web.ocw.sebipay.com (staging API), Chrome 1920 px, light and dark mode</td></tr>
+    <tr><td class="k">Status</td><td><span class="st pass">QA Pass</span></td></tr>
+  </tbody>
+</table>
+
+<h2>Task Overview</h2>
+<p>V3 shows a payment's category but the V4 Payment Details screen did not. The build adds a Category row to the Payment details section of the V4 detail panel. QA opened 76 payments on V4 Payments Out: Check, ACH, Email/Mail check, Let Vendor Decide and International payments with many statuses, including voided ones. For each one, the category the panel's own API returned was compared with what the panel displayed. Every payment with a category showed the correct name. Every payment without one showed no Category row. Values matched the V3 Check List.</p>
+
+<h2>Issue / Requirement Description</h2>
+<ul>
+  <li>Reported: the transaction category is missing from the V4 Payment Details screen, while V3 shows it.</li>
+  <li>Requirement: show the category on the V4 Payment Details screen when one is assigned, and the value must match the transaction's category.</li>
+  <li>Requirement: when there is no category, do not show an empty or misleading value.</li>
+  <li>Requirement: stay consistent with V3 and leave existing payment-details functionality unchanged.</li>
+</ul>
+
+<h2>Updates / Changes Implemented</h2>
+<ul>
+  <li>The Payment details section of the V4 detail panel now has a "Category" row between Method and the next field, showing the category name.</li>
+  <li>The row is left out entirely when the payment has no category.</li>
+  <li>The row also appears in the expanded (full-width) detail view.</li>
+</ul>
+
+<h2>Testing &amp; Verification</h2>
+<h3>Category shown and accurate</h3>
+<ul>
+  <li>Verified that an ACH payment (ref 144) shows "Category: Consulting", which matches its API category.</li>
+  <li>Verified that checks show their own categories: "fgh" (900208, 2231312), "zil bank" (ref 1022), "realm estate" (ref 1022 and 1024) and "zil wallet" (ref 1024).</li>
+  <li>Confirmed that the check and zil-payment detail responses carry the same category ID and name, and the panel shows that name.</li>
+  <li>Confirmed that a voided/canceled check (2231312) still shows its category.</li>
+  <li>Confirmed that the expanded detail view shows the same Category row.</li>
+</ul>
+<h3>No category</h3>
+<ul>
+  <li>Verified that payments with <code>category: null</code> (68 of the 76 opened) show no Category row and no blank or placeholder value.</li>
+</ul>
+<h3>Accuracy sweep</h3>
+<ul>
+  <li>Confirmed that the panel category matched the API category for all 50 payments on page 1 of the All tab, and for all 13 results each for reference 1022 and 1024. There were no mismatches.</li>
+</ul>
+<h3>V3 parity, styling and regression</h3>
+<ul>
+  <li>Confirmed that V4 matches the V3 Check List Category column (900208, 2231312, 2231313 = fgh; 900214 = blank). The V3 check view page has no Category field; V3 shows the category only in the list.</li>
+  <li>Verified that the Category row uses the same typography as the Method row (Plus Jakarta Sans, label 11px/400, value 11px/600) and is readable in dark mode.</li>
+  <li>Confirmed that the other panel content still renders: Reference ID, Transaction ID, Method, Source, Memo, check preview, status timeline and payee details.</li>
+</ul>
+
+<h2>Test Cases Executed</h2>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:38%"><col style="width:40%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>Test Scenario</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC01</td><td>ACH payment with a category</td><td>Category row shows the assigned category (Consulting)</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC02</td><td>Email check with a category (900208)</td><td>Category row shows "fgh"</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC03</td><td>Checks with other category values</td><td>Each shows its own category (zil bank, realm estate, zil wallet)</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC04</td><td>Voided check with a category</td><td>Category still displayed</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC05</td><td>Expanded detail view</td><td>Category row displayed in the expanded layout</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC06</td><td>Payments without a category</td><td>No Category row, no empty value</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC07</td><td>Accuracy sweep, 76 payments of mixed types and statuses</td><td>Panel category = API category for every payment</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC08</td><td>Parity with V3</td><td>Same category per transaction as V3</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC09</td><td>Styling and dark mode</td><td>Category row styled like the other rows; readable in dark mode</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC10</td><td>Existing panel content</td><td>Other fields, preview, timeline and payee details unaffected</td><td class="st pass">Passed</td></tr>
+  </tbody>
+</table>
+
+<h2>Observations (not related to this ticket)</h2>
+<ul>
+  <li>The console repeatedly logs <code>TypeError: Cannot read properties of null (reading 'clearRect')</code> from the check-preview canvas when panels open. The panels still render correctly.</li>
+  <li>The "Switch to the new version" button was not shown in the V3 header for this account, so V4 was opened through its own Payments Out route.</li>
+  <li>Open point from the ticket: no-category behaviour (hide vs "Uncategorized"). The build hides the row, which meets the acceptance criteria.</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>The V4 Payment Details panel now shows the transaction category whenever one is assigned. The value matches the category on the transaction and in V3. The row is hidden when there is no category. This holds in both the side panel and the expanded view, and in light and dark mode. Other panel content is unchanged.</p>
+<p class="status">Status: <span class="pass">QA Pass</span></p>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OCW-24676 QA Test Report</title>
+<meta name="qa-header" content="ZIL MONEY  |  QA TEST REPORT">
+<meta name="qa-footer" content="OCW-24676 | Wallets, Bank Accounts &amp; Bills — UI Text | Internal">
+</head>
+<body>
+
+<p class="eyebrow">QA Test Report</p>
+<h1 class="title">OCW-24676 — Update Wallet, Bank Account<br>and Bill Section Text</h1>
+<p class="meta">Module: Wallets, Bank Accounts &amp; Bills — Version 2.0 · Environment: Feature build (ocw-24676-hari) · 13 Oct 2026</p>
+
+<table class="card"><tr><td><b>Purpose:</b> Confirm that the Transfer tooltips, the Import Bills tooltip and the Recharge My Credits wallet placeholder show the updated text.</td></tr></table>
+
+<h2>Task Details</h2>
+<table class="grid">
+  <colgroup><col style="width:25%"><col></colgroup>
+  <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td class="k">Task ID</td><td>OCW-24676</td></tr>
+    <tr><td class="k">Module</td><td>Wallets, Bank Accounts, Bills (Version 2.0 / Beta UI)</td></tr>
+    <tr><td class="k">Features</td><td>Transfer tooltip (Wallets, Bank Accounts), Import Bills tooltip, Recharge My Credits wallet placeholder</td></tr>
+    <tr><td class="k">Environment</td><td>Feature build https://ocw-24676-hari.web.ocw.sebipay.com · Chrome desktop</td></tr>
+    <tr><td class="k">Status</td><td><span class="st pass">QA Pass</span></td></tr>
+  </tbody>
+</table>
+
+<h2>Task Overview</h2>
+<p>The task updates the help text on three areas so it describes what each action actually does. On the feature build, the Transfer tooltips on Wallets and Bank Accounts, the Import Bills tooltip on Bills and the wallet placeholder in Recharge My Credits were checked in Version 2.0 against the texts QA supplied. All the checked texts are updated. Two wording differences and one scope question are listed under Open Points. The classic (V3.5) UI was also looked at and still shows the old text.</p>
+
+<h2>Issue / Requirement Description</h2>
+<ul>
+  <li>Old texts: Wallet Transfer tooltip "Transfer the fund from your wallet"; Bank Account Transfer tooltip "Money moves between your account"; Bills import text "Bulk import bills from a file or external source"; Recharge wallet field "From Wallet Account".</li>
+  <li>Requirement (texts supplied by QA): Transfer tooltip "Transfer the funds from your wallets or accounts."; Import Bills tooltip "Import bills from your connected third-party apps ."; Recharge My Credits placeholder "Select Wallet".</li>
+  <li>Ticket note: the ticket says import supports an external CSV file "not … importing from connected third-party apps". This conflicts with the new tooltip (see Open Points).</li>
+</ul>
+
+<h2>Updates / Changes Implemented</h2>
+<ul>
+  <li>Wallets (All Wallets) "Transfer Funds" and Bank Accounts (All Accounts) "Transfer" tooltips now read "Transfer the funds from your wallets or accounts".</li>
+  <li>Single-wallet and single-bank-account "Transfer" tooltips now read "Transfer money to your wallets or accounts".</li>
+  <li>Bills "Import Bills" tooltip now reads "Import bills from your connected third-party apps".</li>
+  <li>Recharge My Credits: the field label is "From Wallet" and the placeholder is "Select Wallet".</li>
+</ul>
+
+<h2>Testing &amp; Verification</h2>
+<h3>Wallets (Version 2.0)</h3>
+<ul>
+  <li>Verified that hovering "Transfer Funds" on All Wallets shows "Transfer the funds from your wallets or accounts". The exact string was confirmed in the DOM.</li>
+  <li>Verified that the single-wallet "Transfer" tooltip shows "Transfer money to your wallets or accounts".</li>
+  <li>Confirmed that Recharge My Credits, opened from All Wallets, shows the label "From Wallet" with the placeholder "Select Wallet". From a single wallet the wallet is prefilled; after clearing it, the placeholder is "Select Wallet".</li>
+</ul>
+<h3>Bank Accounts (Version 2.0)</h3>
+<ul>
+  <li>Verified that the All Accounts "Transfer" tooltip shows "Transfer the funds from your wallets or accounts".</li>
+  <li>Verified that the single-account Transfer icon tooltip shows "Transfer money to your wallets or accounts".</li>
+</ul>
+<h3>Bills (Version 2.0)</h3>
+<ul>
+  <li>Verified that the "Import Bills" tooltip shows "Import bills from your connected third-party apps".</li>
+  <li>Confirmed that the Import dialog lists connected apps (QuickBooks Online shown as Connected) and other apps to connect (Xero, Zoho Books, Bill.com, Sage, Odoo and more), so the tooltip matches the feature.</li>
+  <li>Confirmed that the console showed no errors on the Bills page.</li>
+</ul>
+<h3>Classic UI (V3.5) — observation</h3>
+<ul>
+  <li>After clearing the service worker and cache and reloading, the classic Wallets page still shows "Transfer the fund from your wallet", and Recharge still shows the placeholder "From Wallet Account".</li>
+</ul>
+
+<h2>Test Cases Executed</h2>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:38%"><col style="width:40%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>Test Scenario</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC01</td><td>All Wallets — hover Transfer Funds</td><td>"Transfer the funds from your wallets or accounts"</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC02</td><td>Single wallet — hover Transfer</td><td>Updated tooltip naming wallets or accounts (shows "Transfer money to your wallets or accounts")</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC03</td><td>All Wallets — Recharge Credits wallet field</td><td>Placeholder "Select Wallet", no "From Wallet Account"</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC04</td><td>Single wallet — Recharge, clear prefilled wallet</td><td>Placeholder "Select Wallet"</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC05</td><td>All Bank Accounts — hover Transfer</td><td>"Transfer the funds from your wallets or accounts"</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC06</td><td>Single bank account — hover Transfer icon</td><td>Updated tooltip naming wallets or accounts (shows "Transfer money to your wallets or accounts")</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC07</td><td>Bills — hover Import Bills</td><td>"Import bills from your connected third-party apps"</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC08</td><td>Bills — open Import Bills</td><td>Dialog offers connected third-party apps, matching the tooltip</td><td class="st pass">Passed</td></tr>
+  </tbody>
+</table>
+
+<h2>Open Points</h2>
+<ul>
+  <li>Detail views (TC02, TC06) say "Transfer money to your wallets or accounts", while the list views say "Transfer the funds from your wallets or accounts". Should all four match?</li>
+  <li>The supplied texts have a trailing "." (and "apps ." has a space before it). The UI shows neither. This is assumed fine; please confirm.</li>
+  <li>The ticket note says import does not support connected third-party apps, but the new tooltip says it does, and the dialog shows connected apps. Please confirm with the reporter that the tooltip wording is approved.</li>
+  <li>The classic (V3.5) UI still shows the old Transfer tooltip and the old "From Wallet Account" placeholder. Is the change meant for Version 2.0 only?</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>In Version 2.0 on the OCW-24676 feature build, the Transfer tooltips on Wallets and Bank Accounts, the Import Bills tooltip and the Recharge My Credits "Select Wallet" placeholder all show the updated text, with no console errors. The open points above are for the developer or reporter to confirm.</p>
+<p class="status">Status: <span class="pass">QA Pass</span></p>
+</body>
+</html>

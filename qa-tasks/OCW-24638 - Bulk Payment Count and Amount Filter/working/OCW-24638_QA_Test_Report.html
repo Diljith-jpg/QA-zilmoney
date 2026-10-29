@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OCW-24638 QA Test Report</title>
+<meta name="qa-header" content="ZIL MONEY  |  QA TEST REPORT">
+<meta name="qa-footer" content="OCW-24638 | Bulk Payment — My Groups Table | Internal">
+</head>
+<body>
+
+<p class="eyebrow">QA Test Report</p>
+<h1 class="title">OCW-24638 — Bulk Payment Table: Payment Count<br>and Total Amount Filtering</h1>
+<p class="meta">Module: Bulk Payment — My Groups Table · Environment: Staging · 10 Oct 2026</p>
+
+<table class="card"><tr><td><b>Purpose:</b> Confirm that the Payments Count and Total Amount filters on the Bulk Payment table filter the records correctly, and that the visible count and amount values match the filtered results.</td></tr></table>
+
+<h2>Task Details</h2>
+<table class="grid">
+  <colgroup><col style="width:25%"><col></colgroup>
+  <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td class="k">Task ID</td><td>OCW-24638</td></tr>
+    <tr><td class="k">Module</td><td>Bulk Payment Center (V4) — My Groups table</td></tr>
+    <tr><td class="k">Features</td><td>Payments Count filter, Total Amount filter, combined filters, empty state, clear filter</td></tr>
+    <tr><td class="k">Environment</td><td>Staging</td></tr>
+    <tr><td class="k">Status</td><td><span class="st pass">QA Pass</span></td></tr>
+  </tbody>
+</table>
+
+<h2>Task Overview</h2>
+<p>The task fixes the Bulk Payment table, where the Payment Count and Total Amount did not follow the applied filters and showed values from the unfiltered data. QA tested the My Groups table in the V4 Bulk Payment Center on staging. Each filter was applied on its own, then both together, then with a value that matches nothing, and finally cleared. Every filter returned only matching records, and the result count and amounts on screen matched the filtered rows. The fix works as expected.</p>
+
+<h2>Issue / Requirement Description</h2>
+<ul>
+  <li>Reported: after a filter was applied on the Bulk Payment table, Payment Count and Total Amount stayed the same and kept showing values based on the unfiltered data (P2, affects data accuracy).</li>
+  <li>Requirement: applying a filter updates the displayed Payment Count and Total Amount.</li>
+  <li>Requirement: the Payment Count matches the number of visible records after filtering, and the Total Amount matches the values of the visible records.</li>
+</ul>
+
+<h2>Updates / Changes Implemented</h2>
+<ul>
+  <li>The Payments Count column filter now returns only groups with the entered payment count.</li>
+  <li>The Total Amount column filter now returns only groups with the entered total amount.</li>
+  <li>The two filters work together, and the result footer ("Showing X to Y of Z results") updates to match the filtered list.</li>
+</ul>
+
+<h2>Testing &amp; Verification</h2>
+<h3>Payments Count filter</h3>
+<ul>
+  <li>Confirmed that the unfiltered table shows 43 groups ("Showing 1 to 43 of 43 results").</li>
+  <li>Verified that filtering Payments Count by 2 returned 15 results, and every visible row had a Payments Count of 2.</li>
+  <li>Confirmed that clearing the filter brought back all 43 groups.</li>
+</ul>
+<h3>Total Amount filter</h3>
+<ul>
+  <li>Verified that filtering Total Amount by 150 returned 5 results, and every visible row showed $150.00.</li>
+  <li>Verified that a value that matches nothing (987654) showed "No results found" and "Showing 0 results" without errors.</li>
+</ul>
+<h3>Combined filters and stability</h3>
+<ul>
+  <li>Verified that Payments Count 3 together with Total Amount 150 returned only the 2 groups that match both (3 payments / $150.00).</li>
+  <li>Confirmed that clearing all filters brought back the full list of 43 groups.</li>
+  <li>Confirmed that no application console errors were logged while filtering.</li>
+</ul>
+
+<h2>Test Cases Executed</h2>
+<table class="grid">
+  <colgroup><col style="width:8%"><col style="width:38%"><col style="width:40%"><col style="width:14%"></colgroup>
+  <thead><tr><th class="c">ID</th><th>Test Scenario</th><th>Expected Result</th><th class="c">Status</th></tr></thead>
+  <tbody>
+    <tr><td class="id">TC01</td><td>Filter Payments Count by 2</td><td>Only groups with 2 payments are listed; result count matches</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC02</td><td>Clear the Payments Count filter</td><td>Full list (43 groups) is restored</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC03</td><td>Filter Total Amount by 150</td><td>Only groups totalling $150.00 are listed; result count matches</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC04</td><td>Payments Count 3 + Total Amount 150 together</td><td>Only groups matching both filters are listed</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC05</td><td>Total Amount filter with a non-matching value</td><td>"No results found" empty state, no error</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC06</td><td>Clear all filters</td><td>Full list (43 groups) is restored</td><td class="st pass">Passed</td></tr>
+    <tr><td class="id">TC07</td><td>Browser console while filtering</td><td>No application errors</td><td class="st pass">Passed</td></tr>
+  </tbody>
+</table>
+
+<h2>Conclusion</h2>
+<p>The Payments Count and Total Amount filters on the Bulk Payment Center My Groups table now work correctly on staging. The table returns only matching records, the filters work together, and the result count and amounts on screen match the filtered data. Clearing the filters restores the full list, and no application errors were logged. Note: a column filter is applied when Enter is pressed.</p>
+<p class="status">Status: <span class="pass">QA Pass</span></p>
+</body>
+</html>
