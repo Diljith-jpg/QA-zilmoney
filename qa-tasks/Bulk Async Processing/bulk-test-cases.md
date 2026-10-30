@@ -1,7 +1,8 @@
 # Asynchronous Bulk Processing — Test Case Tracker
 
 - **Branch:** `bulk-payment-testing`
-- **Environment:** Staging — https://staging.web.ocw.sebipay.com/ (never production)
+- **Environment:** Staging — https://OCW-24375-SHABEEB.web.ocw.sebipay.com(frontend)
+https://OCW-23926-DANISH-ASYNC.api.ocw.sebipay.com(backend)(never production)
 - **Jira ticket:** _TBD_
 - **Requirements source:** _pending — user to provide requirements .md_
 
