@@ -5,6 +5,12 @@
 https://OCW-23926-DANISH-ASYNC.api.ocw.sebipay.com(backend)(never production)
 - **Jira ticket:** _TBD_
 - **Requirements source:** _pending — user to provide requirements .md_
+- **Dev task (frontend):** OCW-24375 — branch `OCW-24375-SHABEEB` @ `a7b32ae12a`
+
+## Developer evidence
+| Evidence | Source | Date | Key points for QA |
+|---|---|---|---|
+| [Frontend unit / self-test report](evidence/dev-unit-test/OCW-24375-Self-Test-Report.pdf) | Dev (Shabeeb K) | 2026-10-28 | Dev marks it **not ready for QA**. Only the build, type-check, lint and bundle checks were run. The 166 spec `it()` blocks have never been run (the repo has no test runner), and every functional and edge case is NOT RUN. Settle these first: §8 (does V3 bulk print / sendmail get a `url` or a batch?) and the dead "Download checks" code in `V4PaymentSummaryModal`. |
 
 ## How this file is maintained
 - Every test case lives here with a stable ID (`BULK-TC-###`). IDs are never reused or renumbered.
